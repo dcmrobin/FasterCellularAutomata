@@ -325,7 +325,8 @@ MonoBehaviour:
   computeShader: {fileID: 7200000, guid: 4284ca7717becc342b347ae2a16dee47, type: 3}
   width: 300
   height: 300
-  resultTexture: {fileID: 0}
+  renderTexture1: {fileID: 0}
+  renderTexture2: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
