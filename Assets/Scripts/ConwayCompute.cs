@@ -3,9 +3,9 @@ using UnityEngine;
 public class ConwayCompute : MonoBehaviour
 {
     public ComputeShader computeShader;
-    public int width = 64;
-    public int height = 64;
-    public RenderTexture resultTexture;
+    public int width = 300;
+    public int height = 300;
+    public RenderTexture renderTexture;
 
     void Start()
     {
@@ -16,40 +16,40 @@ public class ConwayCompute : MonoBehaviour
 
     void InitializeTexture()
     {
-        resultTexture = new RenderTexture(width, height, 0, RenderTextureFormat.RFloat);
-        resultTexture.enableRandomWrite = true;
-        resultTexture.Create();
+        renderTexture = new RenderTexture(width, height, 0, RenderTextureFormat.RFloat);
+        renderTexture.enableRandomWrite = true;
+        renderTexture.Create();
     }
 
     void Compute()
     {
-        computeShader.SetTexture(0, "Result", resultTexture);
+        computeShader.SetTexture(0, "Result", renderTexture);
         computeShader.Dispatch(0, width / 16, height / 16, 1);
     }
 
     void RandomInitialize()
     {
-        computeShader.SetTexture(1, "Result", resultTexture);
+        computeShader.SetTexture(1, "Result", renderTexture);
         computeShader.Dispatch(1, width / 16, height / 16, 1);
     }
 
     void OnDestroy()
     {
-        resultTexture.Release();
+        renderTexture.Release();
     }
 
     private void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
-        if (resultTexture == null)
+        if (renderTexture == null)
         {
-            resultTexture = new RenderTexture(width, height, 24);
-            resultTexture.enableRandomWrite = true;
-            resultTexture.Create();
+            renderTexture = new RenderTexture(width, height, 24);
+            renderTexture.enableRandomWrite = true;
+            renderTexture.Create();
         }
 
-        computeShader.SetTexture(0, "Result", resultTexture);
-        computeShader.Dispatch(0, resultTexture.width / 16, resultTexture.height / 16, 1);
+        computeShader.SetTexture(0, "Result", renderTexture);
+        computeShader.Dispatch(0, renderTexture.width / 16, renderTexture.height / 16, 1);
 
-        Graphics.Blit(resultTexture, dest);
+        Graphics.Blit(renderTexture, dest);
     }
 }
