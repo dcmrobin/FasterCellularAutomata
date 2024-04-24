@@ -1,0 +1,52 @@
+#pragma kernel CSMain
+#pragma kernel CSRandomInit
+
+RWTexture2D<float> Result;
+
+[numthreads(16, 16, 1)]
+void CSMain (uint3 id : SV_DispatchThreadID) {
+    uint2 texDim;
+    Result.GetDimensions(texDim.x, texDim.y);
+
+    uint2 cellPos = id.xy;
+    float current = Result[cellPos];
+
+    // Count live neighbors
+    int count = 0;
+    for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+            if (x == 0 && y == 0) continue;
+            float neighbor = Result[clamp(cellPos + uint2(x, y), uint2(0, 0), texDim - uint2(1, 1))];
+            count += (int)neighbor;
+        }
+    }
+
+    // Apply Game of Life rules
+    float next = 0.0;
+    if (current > 0.5) {  // Cell is alive
+        if (count < 2 || count > 3) next = 0.0;  // Loneliness or overcrowding
+        else next = 1.0;  // Survival
+    } else {  // Cell is dead
+        if (count == 3) next = 1.0;  // Reproduction
+        else next = 0.0;  // Stay dead
+    }
+
+    Result[cellPos] = next;
+}
+
+[numthreads(16, 16, 1)]
+void CSRandomInit (uint3 id : SV_DispatchThreadID) {
+    // Seed the pseudo-random number generator with thread ID
+    uint seed = ((id.x & 0xFF) << 24) | ((id.y & 0xFF) << 16) | (id.z & 0xFFFF);
+    
+    // Use a simple pseudo-random algorithm (XORSHIFT) to generate a value between 0 and 1
+    uint randState = seed;
+    randState ^= randState << 13;
+    randState ^= randState >> 17;
+    randState ^= randState << 5;
+
+    float randomValue = float(randState & 0xFFFFFF) / float(0xFFFFFF);
+    
+    // Set the cell state based on the random value
+    Result[id.xy] = (randomValue > 0.5) ? 1.0 : 0.0;
+}
