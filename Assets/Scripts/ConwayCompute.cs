@@ -11,7 +11,6 @@ public class ConwayCompute : MonoBehaviour
     {
         InitializeTexture();
         RandomInitialize();
-        Compute();
     }
 
     void InitializeTexture()
@@ -19,12 +18,6 @@ public class ConwayCompute : MonoBehaviour
         renderTexture = new RenderTexture(width, height, 0, RenderTextureFormat.RFloat);
         renderTexture.enableRandomWrite = true;
         renderTexture.Create();
-    }
-
-    void Compute()
-    {
-        computeShader.SetTexture(0, "Result", renderTexture);
-        computeShader.Dispatch(0, width / 16, height / 16, 1);
     }
 
     void RandomInitialize()
