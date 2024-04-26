@@ -7,6 +7,7 @@ public class ConwayCompute : MonoBehaviour
     public int height = 300;
     public RenderTexture renderTexture1;
     public RenderTexture renderTexture2;
+    public MeshRenderer planeObjectRenderer;
     private bool useRenderTexture1 = true;
 
     void Start()
@@ -33,8 +34,7 @@ public class ConwayCompute : MonoBehaviour
         computeShader.Dispatch(1, width / 16, height / 16, 1);
     }
 
-    private void OnRenderImage(RenderTexture src, RenderTexture dest)
-    {
+    private void Update() {
         computeShader.SetTexture(0, "currentBuffer", useRenderTexture1 ? renderTexture1 : renderTexture2);
         computeShader.SetTexture(0, "nextBuffer", useRenderTexture1 ? renderTexture2 : renderTexture1);
         computeShader.Dispatch(0, width / 16, height / 16, 1);
@@ -42,8 +42,7 @@ public class ConwayCompute : MonoBehaviour
         // Swap render textures for the next frame
         useRenderTexture1 = !useRenderTexture1;
 
-        // Display the result using Graphics.Blit
-        Graphics.Blit(useRenderTexture1 ? renderTexture1 : renderTexture2, dest);
+        planeObjectRenderer.material.mainTexture = renderTexture1;
     }
 
     void OnDestroy()
