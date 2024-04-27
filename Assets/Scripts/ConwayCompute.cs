@@ -22,6 +22,8 @@ public class ConwayCompute : MonoBehaviour
         renderTexture1.enableRandomWrite = true;
         renderTexture1.Create();
 
+        planeObjectRenderer.material.mainTexture = renderTexture1;
+
         renderTexture2 = new RenderTexture(width, height, 0, RenderTextureFormat.RFloat);
         renderTexture2.enableRandomWrite = true;
         renderTexture2.Create();
@@ -41,8 +43,6 @@ public class ConwayCompute : MonoBehaviour
 
         // Swap render textures for the next frame
         useRenderTexture1 = !useRenderTexture1;
-
-        planeObjectRenderer.material.mainTexture = renderTexture1;
     }
 
     void OnDestroy()
