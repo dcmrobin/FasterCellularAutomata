@@ -70,11 +70,40 @@ public class ConwayCompute : MonoBehaviour
                 MakeCellAlive();
             }
         }
+        else if (Input.GetMouseButton(1))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                // Convert hit point to UV coordinates on the texture
+                Vector2 uv = hit.textureCoord;
+                int x = Mathf.RoundToInt(uv.x * width);
+                int y = Mathf.RoundToInt(uv.y * height);
+
+                // Update click buffer with click position
+                int[] clickData = new int[] { x, y };
+                clickBuffer.SetData(clickData);
+
+                // Make the cell alive at the clicked point
+                MakeCellDead();
+            }
+        }
     }
 
     void MakeCellAlive()
     {
         int kernelHandle = computeShader.FindKernel("CSMakeCellAlive");
+        computeShader.SetTexture(kernelHandle, "currentBuffer", useRenderTexture1 ? renderTexture1 : renderTexture2);
+        computeShader.SetTexture(kernelHandle, "nextBuffer", useRenderTexture1 ? renderTexture2 : renderTexture1);
+        computeShader.SetBuffer(kernelHandle, "clickBuffer", clickBuffer); // Set click buffer
+        computeShader.Dispatch(kernelHandle, 1, 1, 1);
+    }
+
+    void MakeCellDead()
+    {
+        int kernelHandle = computeShader.FindKernel("CSMakeCellDead");
         computeShader.SetTexture(kernelHandle, "currentBuffer", useRenderTexture1 ? renderTexture1 : renderTexture2);
         computeShader.SetTexture(kernelHandle, "nextBuffer", useRenderTexture1 ? renderTexture2 : renderTexture1);
         computeShader.SetBuffer(kernelHandle, "clickBuffer", clickBuffer); // Set click buffer

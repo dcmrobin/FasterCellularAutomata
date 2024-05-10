@@ -1,6 +1,7 @@
 #pragma kernel CSMain
 #pragma kernel CSRandomInit
 #pragma kernel CSMakeCellAlive
+#pragma kernel CSMakeCellDead
 
 RWTexture2D<float> currentBuffer;
 RWTexture2D<float> nextBuffer;
@@ -61,4 +62,11 @@ void CSMakeCellAlive () {
     // Read click position from buffer
     int2 clickPos = clickBuffer[0];
     nextBuffer[clickPos] = 1.0;
+}
+
+[numthreads(1, 1, 1)]
+void CSMakeCellDead () {
+    // Read click position from buffer
+    int2 clickPos = clickBuffer[0];
+    nextBuffer[clickPos] = 0.0;
 }
