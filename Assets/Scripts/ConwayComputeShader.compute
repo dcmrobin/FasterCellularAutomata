@@ -26,13 +26,13 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
         }
     }
 
-    // Apply Game of Life rules
     float4 next = 0.0;
-    if (current.r == 1) {  // Cell is alive
+    // Apply Game of Life rules
+    if (current.r == 1 && current.g == 1 && current.b == 1) {  // Cell is alive
         if (count < 2 || count > 3) next = 0.0;  // Loneliness or overcrowding
-        else next = float4(1, 0, 0, 1);  // Survival
+        else next = float4(1, 1, 1, 1);  // Survival
     } else {  // Cell is dead
-        if (count == 3) next = float4(1, 0, 0, 1);  // Reproduction
+        if (count == 3) next = float4(1, 1, 1, 1);  // Reproduction
         else next = 0.0;  // Stay dead
     }
 
