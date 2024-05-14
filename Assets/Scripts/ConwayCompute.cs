@@ -22,13 +22,13 @@ public class ConwayCompute : MonoBehaviour
 
     void InitializeTextures()
     {
-        renderTexture1 = new RenderTexture(width, height, 0, RenderTextureFormat.RFloat);
+        renderTexture1 = new RenderTexture(width, height, 0);
         renderTexture1.enableRandomWrite = true;
         renderTexture1.Create();
 
         planeObjectRenderer.material.mainTexture = renderTexture1;
 
-        renderTexture2 = new RenderTexture(width, height, 0, RenderTextureFormat.RFloat);
+        renderTexture2 = new RenderTexture(width, height, 0);
         renderTexture2.enableRandomWrite = true;
         renderTexture2.Create();
     }
