@@ -9,7 +9,9 @@ public class ConwayCompute : MonoBehaviour
     public RenderTexture renderTexture2;
     public MeshRenderer planeObjectRenderer;
     private ComputeBuffer clickBuffer; // Buffer to store click position
+    private ComputeBuffer pauseBuffer;
     private bool useRenderTexture1 = true;
+    private bool isPaused = false;
 
     void Start()
     {
@@ -18,6 +20,9 @@ public class ConwayCompute : MonoBehaviour
 
         // Create click buffer
         clickBuffer = new ComputeBuffer(1, sizeof(int) * 2);
+
+        pauseBuffer = new ComputeBuffer(1, sizeof(int));
+        computeShader.SetBuffer(0, "pauseBuffer", pauseBuffer);
     }
 
     void InitializeTextures()
@@ -49,6 +54,11 @@ public class ConwayCompute : MonoBehaviour
         // Swap render textures for the next frame
         useRenderTexture1 = !useRenderTexture1;
 
+        HandleInput();
+    }
+
+    void HandleInput()
+    {
         // Check for mouse click
         if (Input.GetMouseButton(0))
         {
@@ -90,6 +100,21 @@ public class ConwayCompute : MonoBehaviour
                 MakeCellDead();
             }
         }
+
+        // Handle pause
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!isPaused)
+            {
+                isPaused = true;
+                TogglePause(1);
+            }
+            else if (isPaused)
+            {
+                isPaused = false;
+                TogglePause(0);
+            }
+        }
     }
 
     void MakeCellAlive()
@@ -110,10 +135,18 @@ public class ConwayCompute : MonoBehaviour
         computeShader.Dispatch(kernelHandle, 1, 1, 1);
     }
 
+    public void TogglePause(int pauseState)
+    {
+        pauseBuffer.SetData(new int[] { pauseState });
+        computeShader.SetBuffer(0, "pauseBuffer", pauseBuffer);
+        computeShader.Dispatch(0, 1, 1, 1);
+    }
+
     void OnDestroy()
     {
         renderTexture1.Release();
         renderTexture2.Release();
         clickBuffer.Release(); // Release click buffer
+        pauseBuffer.Release();
     }
 }

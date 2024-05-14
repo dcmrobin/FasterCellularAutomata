@@ -8,8 +8,13 @@ RWTexture2D<float4> nextBuffer;
 
 StructuredBuffer<int2> clickBuffer; // Buffer to store click position
 
+RWBuffer<int> pauseBuffer;
+
 [numthreads(16, 16, 1)]
 void CSMain (uint3 id : SV_DispatchThreadID) {
+    if (pauseBuffer[0] == 1)
+        return;
+
     uint2 texDim;
     currentBuffer.GetDimensions(texDim.x, texDim.y);
 
