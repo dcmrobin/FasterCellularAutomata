@@ -3,8 +3,8 @@
 #pragma kernel CSMakeCellAlive
 #pragma kernel CSMakeCellDead
 
-RWTexture2D<float> currentBuffer;
-RWTexture2D<float> nextBuffer;
+RWTexture2D<float4> currentBuffer;
+RWTexture2D<float4> nextBuffer;
 
 StructuredBuffer<int2> clickBuffer; // Buffer to store click position
 
@@ -21,18 +21,18 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
-            float neighbor = currentBuffer[clamp(cellPos + uint2(x, y), uint2(0, 0), texDim - uint2(1, 1))];
+            float4 neighbor = currentBuffer[clamp(cellPos + uint2(x, y), uint2(0, 0), texDim - uint2(1, 1))];
             count += (int)neighbor;
         }
     }
 
     // Apply Game of Life rules
-    float next = 0.0;
+    float4 next = 0.0;
     if (current > 0.5) {  // Cell is alive
         if (count < 2 || count > 3) next = 0.0;  // Loneliness or overcrowding
-        else next = 1.0;  // Survival
+        else next = float4(1, 0, 0, 1);  // Survival
     } else {  // Cell is dead
-        if (count == 3) next = 1.0;  // Reproduction
+        if (count == 3) next = float4(1, 0, 0, 1);  // Reproduction
         else next = 0.0;  // Stay dead
     }
 
