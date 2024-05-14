@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ConwayCompute : MonoBehaviour
 {
@@ -29,12 +30,14 @@ public class ConwayCompute : MonoBehaviour
     {
         renderTexture1 = new RenderTexture(width, height, 0);
         renderTexture1.enableRandomWrite = true;
+        renderTexture1.filterMode = FilterMode.Point;
         renderTexture1.Create();
 
         planeObjectRenderer.material.mainTexture = renderTexture1;
 
         renderTexture2 = new RenderTexture(width, height, 0);
         renderTexture2.enableRandomWrite = true;
+        renderTexture2.filterMode = FilterMode.Point;
         renderTexture2.Create();
     }
 
@@ -115,6 +118,12 @@ public class ConwayCompute : MonoBehaviour
                 TogglePause(0);
             }
         }
+
+        // Handle camera control
+        transform.position += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0) / 15;
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, -5.75f, 5.75f), Mathf.Clamp(transform.position.y, -5.75f, 5.75f), -10);
+        GetComponent<Camera>().orthographicSize -= Mouse.current.scroll.ReadValue().normalized.y / 2;
+        GetComponent<Camera>().orthographicSize = Mathf.Clamp(GetComponent<Camera>().orthographicSize, 0.1f, 6);
     }
 
     void MakeCellAlive()
