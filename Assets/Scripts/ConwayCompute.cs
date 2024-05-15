@@ -18,7 +18,7 @@ public class ConwayCompute : MonoBehaviour
     void Start()
     {
         InitializeTextures();
-        RandomInitialize();
+        //RandomInitialize();
 
         // Create click buffer
         clickBuffer = new ComputeBuffer(1, sizeof(int) * 2);
