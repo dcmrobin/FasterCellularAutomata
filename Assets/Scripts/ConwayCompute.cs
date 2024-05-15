@@ -11,6 +11,7 @@ public class ConwayCompute : MonoBehaviour
     public MeshRenderer planeObjectRenderer;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer pauseBuffer;
+    private ComputeBuffer colorBuffer;
     private bool useRenderTexture1 = true;
     private bool isPaused = false;
 
@@ -21,6 +22,8 @@ public class ConwayCompute : MonoBehaviour
 
         // Create click buffer
         clickBuffer = new ComputeBuffer(1, sizeof(int) * 2);
+
+        colorBuffer = new ComputeBuffer(1, sizeof(float) * 3);
 
         pauseBuffer = new ComputeBuffer(1, sizeof(int));
         computeShader.SetBuffer(0, "pauseBuffer", pauseBuffer);
@@ -79,6 +82,8 @@ public class ConwayCompute : MonoBehaviour
                 int[] clickData = new int[] { x, y };
                 clickBuffer.SetData(clickData);
 
+                SetCellColor(new Vector3(1f, 1f, 1f)); // Set to white
+
                 // Make the cell alive at the clicked point
                 MakeCellAlive();
             }
@@ -132,6 +137,7 @@ public class ConwayCompute : MonoBehaviour
         computeShader.SetTexture(kernelHandle, "currentBuffer", useRenderTexture1 ? renderTexture1 : renderTexture2);
         computeShader.SetTexture(kernelHandle, "nextBuffer", useRenderTexture1 ? renderTexture2 : renderTexture1);
         computeShader.SetBuffer(kernelHandle, "clickBuffer", clickBuffer); // Set click buffer
+        computeShader.SetBuffer(kernelHandle, "colorBuffer", colorBuffer); // Set color buffer
         computeShader.Dispatch(kernelHandle, 1, 1, 1);
     }
 
@@ -142,6 +148,15 @@ public class ConwayCompute : MonoBehaviour
         computeShader.SetTexture(kernelHandle, "nextBuffer", useRenderTexture1 ? renderTexture2 : renderTexture1);
         computeShader.SetBuffer(kernelHandle, "clickBuffer", clickBuffer); // Set click buffer
         computeShader.Dispatch(kernelHandle, 1, 1, 1);
+    }
+
+    void SetCellColor(Vector3 color)
+    {
+        // Create an array to hold the color data
+        Vector3[] colorData = new Vector3[] { color };
+
+        // Set the data of the color buffer
+        colorBuffer.SetData(colorData);
     }
 
     public void TogglePause(int pauseState)
@@ -157,5 +172,6 @@ public class ConwayCompute : MonoBehaviour
         renderTexture2.Release();
         clickBuffer.Release(); // Release click buffer
         pauseBuffer.Release();
+        colorBuffer.Release();
     }
 }
