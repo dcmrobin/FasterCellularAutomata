@@ -82,7 +82,7 @@ public class ConwayCompute : MonoBehaviour
                 int[] clickData = new int[] { x, y };
                 clickBuffer.SetData(clickData);
 
-                SetCellColor(new Vector3(1f, 1f, 1f)); // Set to white
+                SetCellColor(new Vector3(1f, 1f, 0f));
 
                 // Make the cell alive at the clicked point
                 MakeCellAlive();

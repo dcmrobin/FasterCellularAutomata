@@ -24,6 +24,7 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
 
     // Count live neighbors
     int GoLcount = 0;
+    int count2x2 = 0;
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
@@ -32,17 +33,51 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
             {
                 GoLcount += (int)neighbor;
             }
+            else if (neighbor.r == 1 && neighbor.g == 1 && neighbor.b == 0)
+            {
+                count2x2 += (int)neighbor;
+            }
         }
     }
 
     float4 next = 0.0;
-    // Apply Game of Life rules
-    if (current.r == 1 && current.g == 1 && current.b == 1) {  // Cell is alive
-        if (GoLcount < 2 || GoLcount > 3) next = 0.0;  // Loneliness or overcrowding
-        else next = float4(1, 1, 1, 1);  // Survival
-    } else {  // Cell is dead
-        if (GoLcount == 3) next = float4(1, 1, 1, 1);  // Reproduction
-        else next = 0.0;  // Stay dead
+
+    if (current.r == 1 && current.g == 1 && current.b == 1)// GoL rules
+    {
+        if (GoLcount < 2 || GoLcount > 3)
+        {
+            next = 0.0;  // Loneliness or overcrowding
+        }
+        else
+        {
+            next = float4(1, 1, 1, 1);  // Survival
+        }
+    }
+    else if (current.r == 1 && current.g == 1 && current.b == 0)// 2x2 rules
+    {
+        if (count2x2 == 1 || count2x2 == 2 || count2x2 == 5)
+        {
+            next = float4(1, 1, 0, 1);// survival
+        }
+        else
+        {
+            next = 0.0;
+        }
+    }
+    else
+    {  // if cell is dead
+        if (GoLcount == 3)
+        {
+            next = float4(1, 1, 1, 1);
+        }
+        else if (count2x2 == 3 || count2x2 == 4 || count2x2 == 5)
+        {
+            next = float4(1, 1, 0, 1);
+        }
+        else
+        {
+            next = 0.0;  // Stay dead
+        }
     }
 
     nextBuffer[cellPos] = next;
