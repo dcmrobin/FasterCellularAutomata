@@ -22,22 +22,25 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
     float4 current = currentBuffer[cellPos];
 
     // Count live neighbors
-    int count = 0;
+    int GoLcount = 0;
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
             float4 neighbor = currentBuffer[clamp(cellPos + uint2(x, y), uint2(0, 0), texDim - uint2(1, 1))];
-            count += (int)neighbor;
+            if (neighbor.r == 1 && neighbor.g == 1 && neighbor.b == 1)
+            {
+                GoLcount += (int)neighbor;
+            }
         }
     }
 
     float4 next = 0.0;
     // Apply Game of Life rules
     if (current.r == 1 && current.g == 1 && current.b == 1) {  // Cell is alive
-        if (count < 2 || count > 3) next = 0.0;  // Loneliness or overcrowding
+        if (GoLcount < 2 || GoLcount > 3) next = 0.0;  // Loneliness or overcrowding
         else next = float4(1, 1, 1, 1);  // Survival
     } else {  // Cell is dead
-        if (count == 3) next = float4(1, 1, 1, 1);  // Reproduction
+        if (GoLcount == 3) next = float4(1, 1, 1, 1);  // Reproduction
         else next = 0.0;  // Stay dead
     }
 
