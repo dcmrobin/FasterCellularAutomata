@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class ConwayCompute : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ConwayCompute : MonoBehaviour
     public RenderTexture renderTexture1;
     public RenderTexture renderTexture2;
     public MeshRenderer planeObjectRenderer;
+    public TMP_Dropdown cellTypeDropdown;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer pauseBuffer;
     private ComputeBuffer colorBuffer;
@@ -82,7 +84,7 @@ public class ConwayCompute : MonoBehaviour
                 int[] clickData = new int[] { x, y };
                 clickBuffer.SetData(clickData);
 
-                SetCellColor(new Vector3(1f, 1f, 0f));
+                SetCellColor(CellType());
 
                 // Make the cell alive at the clicked point
                 MakeCellAlive();
@@ -129,6 +131,25 @@ public class ConwayCompute : MonoBehaviour
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, -5.75f, 5.75f), Mathf.Clamp(transform.position.y, -5.75f, 5.75f), -10);
         GetComponent<Camera>().orthographicSize -= Mouse.current.scroll.ReadValue().normalized.y / 2;
         GetComponent<Camera>().orthographicSize = Mathf.Clamp(GetComponent<Camera>().orthographicSize, 0.1f, 6);
+    }
+
+    Vector3 CellType()
+    {
+        Vector3 type;
+        switch (cellTypeDropdown.value)
+        {
+            case 0:
+                type = new Vector3(1, 1, 1);
+                break;
+            case 1:
+                type = new Vector3(1, 1, 0);
+                break;
+            default:
+                type = new Vector3(0, 0, 0);
+                break;
+        }
+
+        return type;
     }
 
     void MakeCellAlive()
