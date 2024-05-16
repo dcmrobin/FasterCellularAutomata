@@ -77,8 +77,8 @@ public class ConwayCompute : MonoBehaviour
             {
                 // Convert hit point to UV coordinates on the texture
                 Vector2 uv = hit.textureCoord;
-                int x = Mathf.RoundToInt(uv.x * width);
-                int y = Mathf.RoundToInt(uv.y * height);
+                int x = Mathf.RoundToInt(uv.x * width - 0.5f);
+                int y = Mathf.RoundToInt(uv.y * height - 0.5f);
 
                 // Update click buffer with click position
                 int[] clickData = new int[] { x, y };
