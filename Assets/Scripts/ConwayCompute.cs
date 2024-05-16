@@ -25,7 +25,7 @@ public class ConwayCompute : MonoBehaviour
         // Create click buffer
         clickBuffer = new ComputeBuffer(1, sizeof(int) * 2);
 
-        colorBuffer = new ComputeBuffer(1, sizeof(float) * 3);
+        colorBuffer = new ComputeBuffer(1, sizeof(float) * 4);
 
         pauseBuffer = new ComputeBuffer(1, sizeof(int));
         computeShader.SetBuffer(0, "pauseBuffer", pauseBuffer);
@@ -133,19 +133,19 @@ public class ConwayCompute : MonoBehaviour
         GetComponent<Camera>().orthographicSize = Mathf.Clamp(GetComponent<Camera>().orthographicSize, 0.1f, 6);
     }
 
-    Vector3 CellType()
+    Vector4 CellType()
     {
-        Vector3 type;
+        Vector4 type;
         switch (cellTypeDropdown.value)
         {
             case 0:
-                type = new Vector3(1, 1, 1);
+                type = new Vector4(1, 1, 1, 1);
                 break;
             case 1:
-                type = new Vector3(1, 1, 0);
+                type = new Vector4(1, 1, 0, 1);
                 break;
             default:
-                type = new Vector3(0, 0, 0);
+                type = new Vector4(0, 0, 0, 1);
                 break;
         }
 
@@ -171,10 +171,10 @@ public class ConwayCompute : MonoBehaviour
         computeShader.Dispatch(kernelHandle, 1, 1, 1);
     }
 
-    void SetCellColor(Vector3 color)
+    void SetCellColor(Vector4 color)
     {
         // Create an array to hold the color data
-        Vector3[] colorData = new Vector3[] { color };
+        Vector4[] colorData = new Vector4[] { color };
 
         // Set the data of the color buffer
         colorBuffer.SetData(colorData);
