@@ -31,11 +31,11 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
             float4 neighbor = currentBuffer[clamp(cellPos + uint2(x, y), uint2(0, 0), texDim - uint2(1, 1))];
             if (neighbor.r == 1 && neighbor.g == 1 && neighbor.b == 1)
             {
-                GoLcount += (int)neighbor;
+                GoLcount += 1; // Increment for GoL live neighbor
             }
             else if (neighbor.r == 1 && neighbor.g == 1 && neighbor.b == 0)
             {
-                Seedscount += (int)neighbor;
+                Seedscount += 1; // Increment for Seeds live neighbor
             }
         }
     }
