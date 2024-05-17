@@ -709,6 +709,8 @@ MonoBehaviour:
     m_Options:
     - m_Text: Life
       m_Image: {fileID: 0}
+    - m_Text: Highlife
+      m_Image: {fileID: 0}
     - m_Text: Seeds
       m_Image: {fileID: 0}
     - m_Text: Day/Night
