@@ -2,16 +2,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using Unity.VisualScripting;
+using System;
 
 public class ConwayCompute : MonoBehaviour
 {
-    public int brushRadius;
     public ComputeShader computeShader;
     public int width = 300;
     public int height = 300;
     public RenderTexture renderTexture1;
     public RenderTexture renderTexture2;
     public MeshRenderer planeObjectRenderer;
+    public int brushRadius;
+    public TMP_InputField brushSizeInputField;
     public TMP_Dropdown cellTypeDropdown;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer pauseBuffer;
@@ -63,6 +65,15 @@ public class ConwayCompute : MonoBehaviour
 
         // Swap render textures for the next frame
         useRenderTexture1 = !useRenderTexture1;
+
+        if (brushSizeInputField.text == "")
+        {
+            brushRadius = 3;
+        }
+        else
+        {
+            brushRadius = Convert.ToInt32(brushSizeInputField.text);
+        }
 
         HandleInput();
     }
