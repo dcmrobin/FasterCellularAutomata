@@ -19,6 +19,7 @@ public class ConwayCompute : MonoBehaviour
     private ComputeBuffer colorBuffer;
     private bool useRenderTexture1 = true;
     private bool isPaused = false;
+    private bool notDrawing = true;
 
     void Start()
     {
@@ -31,6 +32,7 @@ public class ConwayCompute : MonoBehaviour
         colorBuffer = new ComputeBuffer(1, sizeof(float) * 4);
 
         computeShader.SetBool("pauseBool", isPaused);
+        computeShader.SetBool("notDrawingBool", notDrawing);
         computeShader.SetInt("width", width);
         computeShader.SetInt("height", height);
     }
@@ -83,6 +85,7 @@ public class ConwayCompute : MonoBehaviour
         // Check for mouse click
         if (Input.GetMouseButton(0))
         {
+            computeShader.SetBool("notDrawingBool", false);
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -105,6 +108,7 @@ public class ConwayCompute : MonoBehaviour
         }
         else if (Input.GetMouseButton(1))
         {
+            computeShader.SetBool("notDrawingBool", false);
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -124,6 +128,11 @@ public class ConwayCompute : MonoBehaviour
                 // Make the cell alive at the current position
                 MakeCellDead();
             }
+        }
+
+        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+        {
+            computeShader.SetBool("notDrawingBool", true);
         }
 
         // Handle pause
