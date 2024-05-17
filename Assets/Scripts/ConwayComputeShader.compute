@@ -9,14 +9,14 @@ RWTexture2D<float4> nextBuffer;
 StructuredBuffer<int2> clickBuffer; // Buffer to store click position
 StructuredBuffer<float4> colorBuffer; // Buffer to store cell colors
 
-RWBuffer<int> pauseBuffer;
+bool pauseBool;
 int brushRadius;
 int width;
 int height;
 
 [numthreads(16, 16, 1)]
 void CSMain (uint3 id : SV_DispatchThreadID) {
-    if (pauseBuffer[0] == 1)
+    if (pauseBool == true)
         return;
 
     uint2 texDim;

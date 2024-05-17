@@ -16,7 +16,6 @@ public class ConwayCompute : MonoBehaviour
     public TMP_InputField brushSizeInputField;
     public TMP_Dropdown cellTypeDropdown;
     private ComputeBuffer clickBuffer; // Buffer to store click position
-    private ComputeBuffer pauseBuffer;
     private ComputeBuffer colorBuffer;
     private bool useRenderTexture1 = true;
     private bool isPaused = false;
@@ -31,8 +30,7 @@ public class ConwayCompute : MonoBehaviour
 
         colorBuffer = new ComputeBuffer(1, sizeof(float) * 4);
 
-        pauseBuffer = new ComputeBuffer(1, sizeof(int));
-        computeShader.SetBuffer(0, "pauseBuffer", pauseBuffer);
+        computeShader.SetBool("pauseBool", isPaused);
         computeShader.SetInt("width", width);
         computeShader.SetInt("height", height);
     }
@@ -219,8 +217,7 @@ public class ConwayCompute : MonoBehaviour
 
     public void TogglePause(int pauseState)
     {
-        pauseBuffer.SetData(new int[] { pauseState });
-        computeShader.SetBuffer(0, "pauseBuffer", pauseBuffer);
+        computeShader.SetBool("pauseBool", pauseState == 1);
         computeShader.Dispatch(0, 1, 1, 1);
     }
 
@@ -229,7 +226,6 @@ public class ConwayCompute : MonoBehaviour
         renderTexture1.Release();
         renderTexture2.Release();
         clickBuffer.Release(); // Release click buffer
-        pauseBuffer.Release();
         colorBuffer.Release();
     }
 }
