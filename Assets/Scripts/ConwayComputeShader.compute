@@ -30,6 +30,7 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
     int Highlifecount = 0;
     int Assimilationcount = 0;
     int Movecount = 0;
+    int Diamoebacount = 0;
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
@@ -61,6 +62,10 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
             else if (neighbor.r == 0 && neighbor.g == 1 && neighbor.b == 0)
             {
                 Movecount += 1;
+            }
+            else if (neighbor.r == 0.4 && neighbor.g == 0 && neighbor.b == 0)
+            {
+                Diamoebacount += 1;
             }
         }
     }
@@ -137,6 +142,17 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
             next = float4(0, 1, 0, 1);  // Survival
         }
     }
+    else if (current.r == 0.4 && current.g == 0 && current.b == 0)// Move rules
+    {
+        if (Diamoebacount < 5 || Diamoebacount > 8)
+        {
+            next = 0.0;  // Loneliness or overcrowding
+        }
+        else
+        {
+            next = float4(0.4, 0, 0, 1);  // Survival
+        }
+    }
     else
     {  // if cell is dead
         if (GoLcount == 3)
@@ -166,6 +182,10 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
         else if (Movecount == 3 || Movecount == 6 || Movecount == 8)
         {
             next = float4(0, 1, 0, 1);
+        }
+        else if (Diamoebacount >= 5 && Diamoebacount <= 8 || Diamoebacount == 3)
+        {
+            next = float4(0.4, 0, 0, 1);
         }
         else
         {

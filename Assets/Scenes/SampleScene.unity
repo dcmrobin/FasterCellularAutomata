@@ -721,6 +721,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Move
       m_Image: {fileID: 0}
+    - m_Text: Diamoeba
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
