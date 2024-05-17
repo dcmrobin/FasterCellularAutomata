@@ -26,6 +26,7 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
     int GoLcount = 0;
     int Seedscount = 0;
     int DayNightcount = 0;
+    int Amoebacount = 0;
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
@@ -36,11 +37,15 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
             }
             else if (neighbor.r == 1 && neighbor.g == 1 && neighbor.b == 0)
             {
-                Seedscount += 1; // Increment for Seeds live neighbor
+                Seedscount += 1;
             }
             else if (neighbor.r == 0 && neighbor.g == 1 && neighbor.b == 1)
             {
-                DayNightcount += 1; // Increment for Day/Night live neighbor
+                DayNightcount += 1;
+            }
+            else if (neighbor.r == 1 && neighbor.g == 0 && neighbor.b == 1)
+            {
+                Amoebacount += 1;
             }
         }
     }
@@ -73,6 +78,17 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
             next = float4(0, 1, 1, 1);
         }
     }
+    else if (current.r == 1 && current.g == 0 && current.b == 1)// Amoeba rules
+    {
+        if (Amoebacount == 0 || Amoebacount == 2 || Amoebacount == 4 || Amoebacount == 6 || Amoebacount == 7)
+        {
+            next = 0.0;
+        }
+        else
+        {
+            next = float4(1, 0, 1, 1);
+        }
+    }
     else
     {  // if cell is dead
         if (GoLcount == 3)
@@ -86,6 +102,10 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
         else if (DayNightcount == 3 || DayNightcount == 6 || DayNightcount == 7 || DayNightcount == 8)
         {
             next = float4(0, 1, 1, 1);
+        }
+        else if (Amoebacount == 3 || Amoebacount == 5 || Amoebacount == 7)
+        {
+            next = float4(1, 0, 1, 1);
         }
         else
         {

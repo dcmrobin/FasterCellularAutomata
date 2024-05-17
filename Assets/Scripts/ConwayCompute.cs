@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using Unity.VisualScripting;
 
 public class ConwayCompute : MonoBehaviour
 {
@@ -146,6 +147,9 @@ public class ConwayCompute : MonoBehaviour
                 break;
             case 2:
                 type = new Vector4(0, 1, 1, 1);
+                break;
+            case 3:
+                type = new Vector4(1, 0, 1, 1);
                 break;
             default:
                 type = new Vector4(0, 0, 0, 1);
