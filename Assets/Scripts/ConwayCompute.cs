@@ -33,6 +33,8 @@ public class ConwayCompute : MonoBehaviour
 
         pauseBuffer = new ComputeBuffer(1, sizeof(int));
         computeShader.SetBuffer(0, "pauseBuffer", pauseBuffer);
+        computeShader.SetInt("width", width);
+        computeShader.SetInt("height", height);
     }
 
     void InitializeTextures()
@@ -93,25 +95,14 @@ public class ConwayCompute : MonoBehaviour
                 int x = Mathf.RoundToInt(uv.x * width - 0.5f);
                 int y = Mathf.RoundToInt(uv.y * height - 0.5f);
 
-                // Update cells in the neighborhood of the clicked point
-                for (int i = x - brushRadius; i <= x + brushRadius; i++)
-                {
-                    for (int j = y - brushRadius; j <= y + brushRadius; j++)
-                    {
-                        // Check if the current position is within the bounds of the texture
-                        if (i >= 0 && i < width && j >= 0 && j < height)
-                        {
-                            // Update click buffer with current position
-                            int[] clickData = new int[] { i, j };
-                            clickBuffer.SetData(clickData);
+                // Update click buffer with current position
+                int[] clickData = new int[] { x, y };
+                clickBuffer.SetData(clickData);
 
-                            SetCellColor(CellType());
+                SetCellColor(CellType());
 
-                            // Make the cell alive at the current position
-                            MakeCellAlive();
-                        }
-                    }
-                }
+                // Make the cell alive at the current position
+                MakeCellAlive();
             }
         }
         else if (Input.GetMouseButton(1))
@@ -126,25 +117,14 @@ public class ConwayCompute : MonoBehaviour
                 int x = Mathf.RoundToInt(uv.x * width - 0.5f);
                 int y = Mathf.RoundToInt(uv.y * height - 0.5f);
 
-                // Update cells in the neighborhood of the clicked point
-                for (int i = x - brushRadius; i <= x + brushRadius; i++)
-                {
-                    for (int j = y - brushRadius; j <= y + brushRadius; j++)
-                    {
-                        // Check if the current position is within the bounds of the texture
-                        if (i >= 0 && i < width && j >= 0 && j < height)
-                        {
-                            // Update click buffer with current position
-                            int[] clickData = new int[] { i, j };
-                            clickBuffer.SetData(clickData);
+                // Update click buffer with current position
+                int[] clickData = new int[] { x, y };
+                clickBuffer.SetData(clickData);
 
-                            SetCellColor(CellType());
+                SetCellColor(CellType());
 
-                            // Make the cell alive at the current position
-                            MakeCellDead();
-                        }
-                    }
-                }
+                // Make the cell alive at the current position
+                MakeCellDead();
             }
         }
 
@@ -214,6 +194,7 @@ public class ConwayCompute : MonoBehaviour
         computeShader.SetTexture(kernelHandle, "nextBuffer", useRenderTexture1 ? renderTexture2 : renderTexture1);
         computeShader.SetBuffer(kernelHandle, "clickBuffer", clickBuffer); // Set click buffer
         computeShader.SetBuffer(kernelHandle, "colorBuffer", colorBuffer); // Set color buffer
+        computeShader.SetInt("brushRadius", brushRadius);
         computeShader.Dispatch(kernelHandle, 1, 1, 1);
     }
 
@@ -223,6 +204,7 @@ public class ConwayCompute : MonoBehaviour
         computeShader.SetTexture(kernelHandle, "currentBuffer", useRenderTexture1 ? renderTexture1 : renderTexture2);
         computeShader.SetTexture(kernelHandle, "nextBuffer", useRenderTexture1 ? renderTexture2 : renderTexture1);
         computeShader.SetBuffer(kernelHandle, "clickBuffer", clickBuffer); // Set click buffer
+        computeShader.SetInt("brushRadius", brushRadius);
         computeShader.Dispatch(kernelHandle, 1, 1, 1);
     }
 

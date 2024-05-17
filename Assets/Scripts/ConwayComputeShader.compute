@@ -10,6 +10,9 @@ StructuredBuffer<int2> clickBuffer; // Buffer to store click position
 StructuredBuffer<float4> colorBuffer; // Buffer to store cell colors
 
 RWBuffer<int> pauseBuffer;
+int brushRadius;
+int width;
+int height;
 
 [numthreads(16, 16, 1)]
 void CSMain (uint3 id : SV_DispatchThreadID) {
@@ -214,16 +217,40 @@ void CSRandomInit (uint3 id : SV_DispatchThreadID) {
 }
 
 
-[numthreads(1, 1, 1)]
+[numthreads(2, 2, 1)]
 void CSMakeCellAlive () {
     // Read click position from buffer
     int2 clickPos = clickBuffer[0];
-    currentBuffer[clickPos] = float4(colorBuffer[0]);
+
+    // Apply brush size
+    int halfBrushSize = brushRadius / 2;
+
+    // Iterate over the cells in the neighborhood of the clicked point
+    for (int i = clickPos.x - halfBrushSize; i <= clickPos.x + halfBrushSize; i++) {
+        for (int j = clickPos.y - halfBrushSize; j <= clickPos.y + halfBrushSize; j++) {
+            // Check if the current position is within the bounds of the texture
+            if (i >= 0 && i < width && j >= 0 && j < height) {
+                currentBuffer[int2(i, j)] = float4(colorBuffer[0]);
+            }
+        }
+    }
 }
 
-[numthreads(1, 1, 1)]
+[numthreads(2, 2, 1)]
 void CSMakeCellDead () {
     // Read click position from buffer
     int2 clickPos = clickBuffer[0];
-    currentBuffer[clickPos] = 0.0;
+
+    // Apply brush size
+    int halfBrushSize = brushRadius / 2;
+
+    // Iterate over the cells in the neighborhood of the clicked point
+    for (int i = clickPos.x - halfBrushSize; i <= clickPos.x + halfBrushSize; i++) {
+        for (int j = clickPos.y - halfBrushSize; j <= clickPos.y + halfBrushSize; j++) {
+            // Check if the current position is within the bounds of the texture
+            if (i >= 0 && i < width && j >= 0 && j < height) {
+                currentBuffer[int2(i, j)] = 0.0;
+            }
+        }
+    }
 }
