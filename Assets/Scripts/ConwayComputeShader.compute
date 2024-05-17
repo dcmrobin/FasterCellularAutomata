@@ -39,38 +39,14 @@ void CSMain (uint3 id : SV_DispatchThreadID) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
             float4 neighbor = currentBuffer[clamp(cellPos + uint2(x, y), uint2(0, 0), texDim - uint2(1, 1))];
-            if (neighbor.r == 1 && neighbor.g == 1 && neighbor.b == 1)
-            {
-                GoLcount += 1; // Increment for GoL live neighbor
-            }
-            else if (neighbor.r == 1 && neighbor.g == 1 && neighbor.b == 0)
-            {
-                Seedscount += 1;
-            }
-            else if (neighbor.r == 0 && neighbor.g == 1 && neighbor.b == 1)
-            {
-                DayNightcount += 1;
-            }
-            else if (neighbor.r == 1 && neighbor.g == 0 && neighbor.b == 1)
-            {
-                Amoebacount += 1;
-            }
-            else if (neighbor.r == 1 && neighbor.g == 0 && neighbor.b == 0)
-            {
-                Highlifecount += 1;
-            }
-            else if (neighbor.r == 0 && neighbor.g == 0 && neighbor.b == 1)
-            {
-                Assimilationcount += 1;
-            }
-            else if (neighbor.r == 0 && neighbor.g == 1 && neighbor.b == 0)
-            {
-                Movecount += 1;
-            }
-            else if (neighbor.r == 0.4 && neighbor.g == 0 && neighbor.b == 0)
-            {
-                Diamoebacount += 1;
-            }
+            GoLcount += (neighbor.r == 1.0 && neighbor.g == 1.0 && neighbor.b == 1.0) ? 1 : 0;
+            Seedscount += (neighbor.r == 1.0 && neighbor.g == 1.0 && neighbor.b == 0.0) ? 1 : 0;
+            DayNightcount += (neighbor.r == 0.0 && neighbor.g == 1.0 && neighbor.b == 1.0) ? 1 : 0;
+            Amoebacount += (neighbor.r == 1.0 && neighbor.g == 0.0 && neighbor.b == 1.0) ? 1 : 0;
+            Highlifecount += (neighbor.r == 1.0 && neighbor.g == 0.0 && neighbor.b == 0.0) ? 1 : 0;
+            Assimilationcount += (neighbor.r == 0.0 && neighbor.g == 0.0 && neighbor.b == 1.0) ? 1 : 0;
+            Movecount += (neighbor.r == 0.0 && neighbor.g == 1.0 && neighbor.b == 0.0) ? 1 : 0;
+            Diamoebacount += (neighbor.r == 0.4 && neighbor.g == 0.0 && neighbor.b == 0.0) ? 1 : 0;
         }
     }
 
