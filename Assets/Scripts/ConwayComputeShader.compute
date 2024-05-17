@@ -10,7 +10,7 @@ StructuredBuffer<int2> clickBuffer; // Buffer to store click position
 StructuredBuffer<float4> colorBuffer; // Buffer to store cell colors
 
 bool pauseBool;
-int brushRadius;
+uint brushRadius;
 int width;
 int height;
 
