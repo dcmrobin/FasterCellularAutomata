@@ -154,6 +154,9 @@ public class ConwayCompute : MonoBehaviour
             case 4:
                 type = new Vector4(1, 0, 1, 1);
                 break;
+            case 5:
+                type = new Vector4(0, 0, 1, 1);
+                break;
             default:
                 type = new Vector4(0, 0, 0, 1);
                 break;
