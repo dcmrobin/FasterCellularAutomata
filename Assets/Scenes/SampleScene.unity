@@ -870,6 +870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af73f20931861fe4eaa0c4125d225b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  brushRadius: 3
   computeShader: {fileID: 7200000, guid: 4284ca7717becc342b347ae2a16dee47, type: 3}
   width: 300
   height: 300

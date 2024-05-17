@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 
 public class ConwayCompute : MonoBehaviour
 {
+    public int brushRadius;
     public ComputeShader computeShader;
     public int width = 300;
     public int height = 300;
@@ -81,14 +82,25 @@ public class ConwayCompute : MonoBehaviour
                 int x = Mathf.RoundToInt(uv.x * width - 0.5f);
                 int y = Mathf.RoundToInt(uv.y * height - 0.5f);
 
-                // Update click buffer with click position
-                int[] clickData = new int[] { x, y };
-                clickBuffer.SetData(clickData);
+                // Update cells in the neighborhood of the clicked point
+                for (int i = x - brushRadius; i <= x + brushRadius; i++)
+                {
+                    for (int j = y - brushRadius; j <= y + brushRadius; j++)
+                    {
+                        // Check if the current position is within the bounds of the texture
+                        if (i >= 0 && i < width && j >= 0 && j < height)
+                        {
+                            // Update click buffer with current position
+                            int[] clickData = new int[] { i, j };
+                            clickBuffer.SetData(clickData);
 
-                SetCellColor(CellType());
+                            SetCellColor(CellType());
 
-                // Make the cell alive at the clicked point
-                MakeCellAlive();
+                            // Make the cell alive at the current position
+                            MakeCellAlive();
+                        }
+                    }
+                }
             }
         }
         else if (Input.GetMouseButton(1))
@@ -100,15 +112,28 @@ public class ConwayCompute : MonoBehaviour
             {
                 // Convert hit point to UV coordinates on the texture
                 Vector2 uv = hit.textureCoord;
-                int x = Mathf.RoundToInt(uv.x * width);
-                int y = Mathf.RoundToInt(uv.y * height);
+                int x = Mathf.RoundToInt(uv.x * width - 0.5f);
+                int y = Mathf.RoundToInt(uv.y * height - 0.5f);
 
-                // Update click buffer with click position
-                int[] clickData = new int[] { x, y };
-                clickBuffer.SetData(clickData);
+                // Update cells in the neighborhood of the clicked point
+                for (int i = x - brushRadius; i <= x + brushRadius; i++)
+                {
+                    for (int j = y - brushRadius; j <= y + brushRadius; j++)
+                    {
+                        // Check if the current position is within the bounds of the texture
+                        if (i >= 0 && i < width && j >= 0 && j < height)
+                        {
+                            // Update click buffer with current position
+                            int[] clickData = new int[] { i, j };
+                            clickBuffer.SetData(clickData);
 
-                // Make the cell alive at the clicked point
-                MakeCellDead();
+                            SetCellColor(CellType());
+
+                            // Make the cell alive at the current position
+                            MakeCellDead();
+                        }
+                    }
+                }
             }
         }
 
