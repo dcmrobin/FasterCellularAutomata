@@ -6,6 +6,7 @@ using System;
 
 public class ConwayCompute : MonoBehaviour
 {
+    public Color demo;
     public ComputeShader computeShader;
     public int width = 300;
     public int height = 300;
@@ -185,6 +186,9 @@ public class ConwayCompute : MonoBehaviour
                 break;
             case 7:
                 type = new Vector4(0.4f, 0, 0, 1);
+                break;
+            case 8:
+                type = new Vector4(0.5f, 1, 0.5f, 1);
                 break;
             default:
                 type = new Vector4(0, 0, 0, 1);
