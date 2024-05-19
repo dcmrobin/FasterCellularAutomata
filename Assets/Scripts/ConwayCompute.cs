@@ -188,7 +188,7 @@ public class ConwayCompute : MonoBehaviour
                 type = new Vector4(0.4f, 0, 0, 1);
                 break;
             case 8:
-                type = new Vector4(0.5f, 1, 0.5f, 1);
+                type = new Vector4(0.6f, 1, 0.6f, 1);
                 break;
             default:
                 type = new Vector4(0, 0, 0, 1);
