@@ -5,12 +5,20 @@ using Unity.VisualScripting;
 using System;
 
 [Serializable]
-public struct Automaton
+public class Automaton
 {
     public string name;
     public Color color;
     public int s;
     public int b;
+}
+
+[Serializable]
+public struct AutomatonForBuffer
+{
+    public Vector4 color;
+    public int[] s;
+    public int[] b;
 }
 
 public class ConwayCompute : MonoBehaviour
@@ -26,8 +34,10 @@ public class ConwayCompute : MonoBehaviour
     public TMP_InputField brushSizeInputField;
     public TMP_Dropdown cellTypeDropdown;
     public Automaton[] cellularAutomata;
+    private AutomatonForBuffer[] automataForBuffer;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer colorBuffer;
+    private ComputeBuffer automatonBuffer;
     private bool useRenderTexture1 = true;
     private bool isPaused = false;
     private bool notDrawing = true;
@@ -41,6 +51,8 @@ public class ConwayCompute : MonoBehaviour
         clickBuffer = new ComputeBuffer(1, sizeof(int) * 2);
 
         colorBuffer = new ComputeBuffer(1, sizeof(float) * 4);
+
+        InitializeRules();
 
         computeShader.SetBool("pauseBool", isPaused);
         computeShader.SetBool("notDrawingBool", notDrawing);
@@ -61,6 +73,42 @@ public class ConwayCompute : MonoBehaviour
         renderTexture2.enableRandomWrite = true;
         renderTexture2.filterMode = FilterMode.Point;
         renderTexture2.Create();
+    }
+
+    void InitializeRules()
+    {
+
+        for (int i = 0; i < cellularAutomata.Length; i++)
+        {
+            char[] surviveCharArray = cellularAutomata[i].s.ToString().ToCharArray();
+            char[] bornCharArray = cellularAutomata[i].b.ToString().ToCharArray();
+
+            int[] surviveIntArray = new int[surviveCharArray.Length];
+            int[] bornIntArray = new int[bornCharArray.Length];
+
+            for (int b = 0; b < bornCharArray.Length; b++)
+            {
+                for (int s = 0; s < surviveCharArray.Length; s++)
+                {
+                    if (int.TryParse(bornCharArray[b].ToString(), out int B_result) && int.TryParse(surviveCharArray[s].ToString(), out int S_result))
+                    {
+                        bornIntArray[b] = B_result;
+                        surviveIntArray[s] = S_result;
+                    }
+                }
+            }
+
+            automataForBuffer[i] = new AutomatonForBuffer()
+            {
+                color = new Vector4(cellularAutomata[i].color.r, cellularAutomata[i].color.g, cellularAutomata[i].color.b, cellularAutomata[i].color.a),
+                s = surviveIntArray,
+                b = bornIntArray
+            };
+        }
+
+        automatonBuffer = new ComputeBuffer(1, 1);
+        automatonBuffer.SetData(automataForBuffer);
+        computeShader.SetBuffer(0, "automatonBuffer", automatonBuffer);
     }
 
     void RandomInitialize()

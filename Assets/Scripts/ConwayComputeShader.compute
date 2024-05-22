@@ -6,8 +6,16 @@
 RWTexture2D<float4> currentBuffer;
 RWTexture2D<float4> nextBuffer;
 
+struct Automaton
+{
+    float4 color;
+    int[] s;
+    int[] b;
+};
+
 StructuredBuffer<int2> clickBuffer; // Buffer to store click position
 StructuredBuffer<float4> colorBuffer; // Buffer to store cell colors
+StructuredBuffer<Automaton> automatonBuffer;
 
 bool pauseBool;
 bool notDrawingBool;
