@@ -41,7 +41,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
             if (x == 0 && y == 0) continue;
             float4 neighbor = currentBuffer[clamp(cellPos + uint2(x, y), uint2(0, 0), texDim - uint2(1, 1))];
             GoLcount += int((neighbor.r == 1.0) && (neighbor.g == 1.0) && (neighbor.b == 1.0));
-            Seedscount += int((neighbor.r == 1.0) && (neighbor.g == 1.0) && (neighbor.b == 0.0));
+            Seedscount += int((neighbor.r == 1.0) && (neighbor.g == 0.8) && (neighbor.b == 0.0));
             DayNightcount += int((neighbor.r == 0.0) && (neighbor.g == 1.0) && (neighbor.b == 1.0));
             Amoebacount += int((neighbor.r == 1.0) && (neighbor.g == 0.0) && (neighbor.b == 1.0));
             Highlifecount += int((neighbor.r == 1.0) && (neighbor.g == 0.0) && (neighbor.b == 0.0));
@@ -55,7 +55,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     // Use ternary operator and step function for rules
     float4 next = (current.r == 1 && current.g == 1 && current.b == 1) ?
         ((GoLcount < 2 || GoLcount > 3) ? 0.0 : float4(1, 1, 1, 1)) :
-        (current.r == 1 && current.g == 1 && current.b == 0) ?
+        (current.r == 1 && current.g == 0.8 && current.b == 0) ?
         0.0 :
         (current.r == 0 && current.g == 1 && current.b == 1) ?
         ((DayNightcount == 5 || DayNightcount < 3) ? 0.0 : float4(0, 1, 1, 1)) :
@@ -73,7 +73,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
         ((Mazecount < 1 || Mazecount > 5) ? 0.0 : float4(0.6, 1, 0.6, 1)) :
         // if cell is dead
         ((GoLcount == 3) ? float4(1, 1, 1, 1) :
-         (Seedscount == 2) ? float4(1, 1, 0, 1) :
+         (Seedscount == 2) ? float4(1, 0.8, 0, 1) :
          (DayNightcount == 3 || DayNightcount == 6 || DayNightcount == 7 || DayNightcount == 8) ? float4(0, 1, 1, 1) :
          (Amoebacount == 3 || Amoebacount == 5 || Amoebacount == 7) ? float4(1, 0, 1, 1) :
          (Highlifecount == 3 || Highlifecount == 6) ? float4(1, 0, 0, 1) :
