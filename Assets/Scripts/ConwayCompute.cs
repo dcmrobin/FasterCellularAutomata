@@ -4,6 +4,15 @@ using TMPro;
 using Unity.VisualScripting;
 using System;
 
+[Serializable]
+public struct Automaton
+{
+    public string name;
+    public Color color;
+    public int s;
+    public int b;
+}
+
 public class ConwayCompute : MonoBehaviour
 {
     public Color demo;
@@ -16,6 +25,7 @@ public class ConwayCompute : MonoBehaviour
     public int brushRadius;
     public TMP_InputField brushSizeInputField;
     public TMP_Dropdown cellTypeDropdown;
+    public Automaton[] cellularAutomata;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer colorBuffer;
     private bool useRenderTexture1 = true;
