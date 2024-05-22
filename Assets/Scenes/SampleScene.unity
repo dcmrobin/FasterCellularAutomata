@@ -1094,6 +1094,11 @@ MonoBehaviour:
   brushRadius: 3
   brushSizeInputField: {fileID: 1164521823}
   cellTypeDropdown: {fileID: 950662213}
+  cellularAutomata:
+  - name: Life
+    color: {r: 1, g: 1, b: 1, a: 1}
+    s: 23
+    b: 3
 --- !u!1 &969530250
 GameObject:
   m_ObjectHideFlags: 0
