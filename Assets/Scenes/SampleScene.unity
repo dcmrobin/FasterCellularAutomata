@@ -941,6 +941,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Pseudo Life
       m_Image: {fileID: 0}
+    - m_Text: 3-4
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1088,7 +1090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af73f20931861fe4eaa0c4125d225b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  demo: {r: 1, g: 0.21176471, b: 0, a: 1}
+  demo: {r: 0, g: 0, b: 0, a: 1}
   computeShader: {fileID: 7200000, guid: 4284ca7717becc342b347ae2a16dee47, type: 3}
   width: 300
   height: 300

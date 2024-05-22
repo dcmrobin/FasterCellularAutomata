@@ -38,6 +38,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     int Mazecount = 0;
     int TwoXtwocount = 0;
     int PseudoLifecount = 0;
+    int ThirtyFourcount = 0;
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
@@ -53,6 +54,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
             Mazecount += int((neighbor.r == 0.6) && (neighbor.g == 1.0) && (neighbor.b == 0.6));
             TwoXtwocount += int((neighbor.r == 1.0) && (neighbor.g == 1.0) && (neighbor.b == 0.2));
             PseudoLifecount += int((neighbor.r == 1.0) && (neighbor.g == 0.2) && (neighbor.b == 0.0));
+            ThirtyFourcount += int((neighbor.r == 0.2) && (neighbor.g == 0.0) && (neighbor.b == 0.2));
         }
     }
 
@@ -79,6 +81,8 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
         ((TwoXtwocount != 1 && TwoXtwocount != 2 && TwoXtwocount != 5) ? 0.0 : float4(1, 1, 0.2, 1)) :
         (current.r == 1 && current.g == 0.2 && current.b == 0) ?
         ((PseudoLifecount != 2 && PseudoLifecount != 3 && PseudoLifecount != 8) ? 0.0 : float4(1, 0.2, 0, 1)) :
+        (current.r == 0.2 && current.g == 0 && current.b == 0.2) ?
+        ((ThirtyFourcount != 3 && ThirtyFourcount != 4) ? 0.0 : float4(0.2, 0, 0.2, 1)) :
         // if cell is dead
         ((GoLcount == 3) ? float4(1, 1, 1, 1) :
          (Seedscount == 2) ? float4(1, 0.8, 0, 1) :
@@ -89,8 +93,9 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
          (Movecount == 3 || Movecount == 6 || Movecount == 8) ? float4(0, 1, 0, 1) :
          (Diamoebacount >= 5 && Diamoebacount <= 8 || Diamoebacount == 3) ? float4(0.4, 0, 0, 1) :
          (Mazecount == 3) ? float4(0.6, 1, 0.6, 1) :
-         (TwoXtwocount == 3 || TwoXtwocount == 6) ? float4(1, 1, 0.2, 1) : 
-         (PseudoLifecount == 3 || PseudoLifecount == 5 || PseudoLifecount == 7) ? float4(1, 0.2, 0, 1) : 0.0);
+         (TwoXtwocount == 3 || TwoXtwocount == 6) ? float4(1, 1, 0.2, 1) :
+         (PseudoLifecount == 3 || PseudoLifecount == 5 || PseudoLifecount == 7) ? float4(1, 0.2, 0, 1) :
+         (ThirtyFourcount == 3 || ThirtyFourcount == 4) ? float4(0.2, 0, 0.2, 1) : 0.0);
 
     nextBuffer[cellPos] = next;
 }
