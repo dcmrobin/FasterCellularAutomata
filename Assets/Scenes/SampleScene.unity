@@ -947,6 +947,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Stains
       m_Image: {fileID: 0}
+    - m_Text: Coagulations
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
