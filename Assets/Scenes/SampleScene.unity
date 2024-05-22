@@ -949,6 +949,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Coagulations
       m_Image: {fileID: 0}
+    - m_Text: Walled Cities
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1096,7 +1098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af73f20931861fe4eaa0c4125d225b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  demo: {r: 0, g: 0, b: 0, a: 1}
+  demo: {r: 0.23921569, g: 0.25490198, b: 0.7607843, a: 1}
   computeShader: {fileID: 7200000, guid: 4284ca7717becc342b347ae2a16dee47, type: 3}
   width: 300
   height: 300
@@ -2093,8 +2095,8 @@ MonoBehaviour:
   m_fontSize: 14
   m_fontSizeBase: 14
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 0
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
