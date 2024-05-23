@@ -16,6 +16,7 @@ public class ConwayCompute : MonoBehaviour
     public int brushRadius;
     public TMP_InputField brushSizeInputField;
     public TMP_Dropdown cellTypeDropdown;
+    public TMP_Text currentRuleText;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer colorBuffer;
     private ComputeBuffer automatonBuffer;
@@ -26,7 +27,7 @@ public class ConwayCompute : MonoBehaviour
     void Start()
     {
         InitializeTextures();
-        //RandomInitialize();
+        InitCellType();
 
         // Create click buffer
         clickBuffer = new ComputeBuffer(1, sizeof(int) * 2);
@@ -37,6 +38,16 @@ public class ConwayCompute : MonoBehaviour
         computeShader.SetBool("notDrawingBool", notDrawing);
         computeShader.SetInt("width", width);
         computeShader.SetInt("height", height);
+    }
+
+    public void InitCellType()
+    {
+        CellType();
+    }
+
+    public void CopyRule()
+    {
+        GUIUtility.systemCopyBuffer = currentRuleText.text;
     }
 
     void InitializeTextures()
@@ -159,70 +170,90 @@ public class ConwayCompute : MonoBehaviour
         GetComponent<Camera>().orthographicSize = Mathf.Clamp(GetComponent<Camera>().orthographicSize, 0.1f, 6);
     }
 
-    Vector4 CellType()
+    public Vector4 CellType()
     {
         Vector4 type;
         switch (cellTypeDropdown.value)
         {
             case 0:
                 type = new Vector4(1, 1, 1, 1);
+                currentRuleText.text = "23/3";
                 break;
             case 1:
                 type = new Vector4(1, 0, 0, 1);
+                currentRuleText.text = "23/36";
                 break;
             case 2:
                 type = new Vector4(1, 0.8f, 0, 1);
+                currentRuleText.text = "/2";
                 break;
             case 3:
                 type = new Vector4(0, 1, 1, 1);
+                currentRuleText.text = "34578/3678";
                 break;
             case 4:
                 type = new Vector4(1, 0, 1, 1);
+                currentRuleText.text = "1358/357";
                 break;
             case 5:
                 type = new Vector4(0, 0, 1, 1);
+                currentRuleText.text = "4567/345";
                 break;
             case 6:
                 type = new Vector4(0, 1, 0, 1);
+                currentRuleText.text = "245/368";
                 break;
             case 7:
                 type = new Vector4(0.4f, 0, 0, 1);
+                currentRuleText.text = "5678/35678";
                 break;
             case 8:
                 type = new Vector4(0.6f, 1, 0.6f, 1);
+                currentRuleText.text = "12345/3";
                 break;
             case 9:
                 type = new Vector4(1, 1, 0.2f, 1);
+                currentRuleText.text = "125/36";
                 break;
             case 10:
                 type = new Vector4(1, 0.2f, 0, 1);
+                currentRuleText.text = "238/357";
                 break;
             case 11:
                 type = new Vector4(0.2f, 0, 0.2f, 1);
+                currentRuleText.text = "34/34";
                 break;
             case 12:
                 type = new Vector4(0.2f, 0.2f, 0.2f, 1);
+                currentRuleText.text = "5/345";
                 break;
             case 13:
                 type = new Vector4(0.2f, 0, 1, 1);
+                currentRuleText.text = "235678/3678";
                 break;
             case 14:
                 type = new Vector4(0.6f, 0.6f, 0, 1);
+                currentRuleText.text = "235678/378";
                 break;
             case 15:
                 type = new Vector4(0.2f, 0.2f, 0.8f, 1);
+                currentRuleText.text = "2345/45678";
                 break;
             case 16:
                 type = new Vector4(1, 0.6f, 0, 1);
+                currentRuleText.text = "1/1";
                 break;
             case 17:
                 type = new Vector4(0, 0.4f, 0.4f, 1);
+                currentRuleText.text = "1357/1357";
                 break;
             case 18:
                 type = new Vector4(0, 0.4f, 0, 1);
+                currentRuleText.text = "05678/3458";
                 break;
             default:
                 type = new Vector4(0, 0, 0, 1);
+                currentRuleText.text = "ERROR/ERROR";
                 break;
         }
 
