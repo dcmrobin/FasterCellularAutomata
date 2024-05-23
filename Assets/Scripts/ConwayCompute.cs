@@ -15,11 +15,14 @@ public class ConwayCompute : MonoBehaviour
     public MeshRenderer planeObjectRenderer;
     public int brushRadius;
     public TMP_InputField brushSizeInputField;
+    public TMP_InputField customRuleInputField;
     public TMP_Dropdown cellTypeDropdown;
     public TMP_Text currentRuleText;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer colorBuffer;
     private ComputeBuffer automatonBuffer;
+    private ComputeBuffer customSbuffer;
+    private ComputeBuffer customBbuffer;
     private bool useRenderTexture1 = true;
     private bool isPaused = false;
     private bool notDrawing = true;
@@ -33,6 +36,9 @@ public class ConwayCompute : MonoBehaviour
         clickBuffer = new ComputeBuffer(1, sizeof(int) * 2);
 
         colorBuffer = new ComputeBuffer(1, sizeof(float) * 4);
+
+        customSbuffer = new ComputeBuffer(1, sizeof(int));
+        customBbuffer = new ComputeBuffer(1, sizeof(int));
 
         computeShader.SetBool("pauseBool", isPaused);
         computeShader.SetBool("notDrawingBool", notDrawing);
@@ -48,6 +54,35 @@ public class ConwayCompute : MonoBehaviour
     public void CopyRule()
     {
         GUIUtility.systemCopyBuffer = currentRuleText.text;
+    }
+
+    public void SetCustomRule()
+    {
+        string[] sb = customRuleInputField.text.Split("/", StringSplitOptions.RemoveEmptyEntries);
+
+        char[] bornCharArray = sb[0].ToCharArray();
+        char[] surviveCharArray = sb[1].ToCharArray();
+
+        int[] bornIntArray = new int[bornCharArray.Length];
+        int[] surviveIntArray = new int[surviveCharArray.Length];
+
+        for (int s = 0; s < surviveCharArray.Length; s++)
+        {
+            for (int b = 0; b < bornCharArray.Length; b++)
+            {
+                if (int.TryParse(surviveCharArray[s].ToString(), out int S_result) && int.TryParse(bornCharArray[b].ToString(), out int B_result))
+                {
+                    surviveIntArray[s] = S_result;
+                    bornIntArray[b] = B_result;
+                }
+            }
+        }
+
+        customSbuffer.SetData(surviveIntArray);
+        customBbuffer.SetData(bornIntArray);
+
+        computeShader.SetBuffer(0, "customSbuffer", customSbuffer);
+        computeShader.SetBuffer(0, "customBbuffer", customBbuffer);
     }
 
     void InitializeTextures()
@@ -251,6 +286,10 @@ public class ConwayCompute : MonoBehaviour
                 type = new Vector4(0, 0.4f, 0, 1);
                 currentRuleText.text = "05678/3458";
                 break;
+            case 19:
+                type = new Vector4(1, 0.4f, 0, 1);
+                currentRuleText.text = "custom";
+                break;
             default:
                 type = new Vector4(0, 0, 0, 1);
                 currentRuleText.text = "ERROR/ERROR";
@@ -302,5 +341,7 @@ public class ConwayCompute : MonoBehaviour
         renderTexture2.Release();
         clickBuffer.Release(); // Release click buffer
         colorBuffer.Release();
+        customSbuffer.Release();
+        customBbuffer.Release();
     }
 }
