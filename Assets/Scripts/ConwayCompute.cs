@@ -59,14 +59,14 @@ public class ConwayCompute : MonoBehaviour
     {
         if (customRuleInputField.text != "" && customRuleInputField.text.Contains("/"))
         {
-            string[] sb = customRuleInputField.text.Split("/", StringSplitOptions.RemoveEmptyEntries);
-    
+            string[] sb = customRuleInputField.text.Split("/");
+
             char[] surviveCharArray = sb[0].ToCharArray();
             char[] bornCharArray = sb[1].ToCharArray();
-    
+
             int[] surviveIntArray = new int[surviveCharArray.Length];
             int[] bornIntArray = new int[bornCharArray.Length];
-    
+
             for (int s = 0; s < surviveCharArray.Length; s++)
             {
                 for (int b = 0; b < bornCharArray.Length; b++)
