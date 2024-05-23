@@ -3,6 +3,8 @@ using UnityEngine.InputSystem;
 using TMPro;
 using Unity.VisualScripting;
 using System;
+using System.Collections.Generic;
+using System.Collections;
 
 public class ConwayCompute : MonoBehaviour
 {
@@ -109,6 +111,15 @@ public class ConwayCompute : MonoBehaviour
     public void ClearBoard()
     {
         computeShader.SetBool("clearing", true);
+        StartCoroutine(DisableClearingFlag());
+    }
+
+    private IEnumerator DisableClearingFlag()
+    {
+        // Wait for one frame
+        yield return null;
+
+        // Toggle off the clearing flag
         computeShader.SetBool("clearing", false);
     }
 
