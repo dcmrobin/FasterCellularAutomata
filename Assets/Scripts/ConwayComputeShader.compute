@@ -1,5 +1,4 @@
 #pragma kernel CSMain
-#pragma kernel CSRandomInit
 #pragma kernel CSMakeCellAlive
 #pragma kernel CSMakeCellDead
 
@@ -14,6 +13,7 @@ StructuredBuffer<int> customBbuffer;
 
 bool pauseBool;
 bool notDrawingBool;
+bool clearing;
 uint brushRadius;
 int width;
 int height;
@@ -156,23 +156,13 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     }
 
     nextBuffer[cellPos] = next;
-}
-
-[numthreads(16, 16, 1)]
-void CSRandomInit(uint3 id : SV_DispatchThreadID) {
-    // Seed the pseudo-random number generator with thread ID
-    uint seed = ((id.x & 0xFF) << 24) | ((id.y & 0xFF) << 16) | (id.z & 0xFFFF);
-
-    // Use a simple pseudo-random algorithm (XORSHIFT) to generate a value between 0 and 1
-    uint randState = seed;
-    randState ^= randState << 13;
-    randState ^= randState >> 17;
-    randState ^= randState << 5;
-
-    float randomValue = float(randState & 0xFFFFFF) / float(0xFFFFFF);
-
-    // Set the cell state based on the random value
-    currentBuffer[id.xy] = (randomValue > 0.5) ? 1.0 : 0.0;
+    if (clearing) {
+        for (uint cx = 0; cx < texDim.x; cx++) {
+            for (uint cy = 0; cy < texDim.y; cy++) {
+                nextBuffer[uint2(cx, cy)] = 0.0;
+            }
+        }
+    }
 }
 
 [numthreads(2, 2, 1)]

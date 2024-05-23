@@ -106,6 +106,12 @@ public class ConwayCompute : MonoBehaviour
         }
     }
 
+    public void ClearBoard()
+    {
+        computeShader.SetBool("clearing", true);
+        computeShader.SetBool("clearing", false);
+    }
+
     void InitializeTextures()
     {
         renderTexture1 = new RenderTexture(width, height, 0);
@@ -119,13 +125,6 @@ public class ConwayCompute : MonoBehaviour
         renderTexture2.enableRandomWrite = true;
         renderTexture2.filterMode = FilterMode.Point;
         renderTexture2.Create();
-    }
-
-    void RandomInitialize()
-    {
-        computeShader.SetTexture(1, "currentBuffer", useRenderTexture1 ? renderTexture1 : renderTexture2);
-        computeShader.SetTexture(1, "nextBuffer", useRenderTexture1 ? renderTexture2 : renderTexture1);
-        computeShader.Dispatch(1, width / 16, height / 16, 1);
     }
 
     private void Update()
