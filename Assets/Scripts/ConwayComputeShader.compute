@@ -43,6 +43,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     int Stainscount = 0;
     int Coagulationscount = 0;
     int WalledCitiescount = 0;
+    int Gnarlcount = 0;
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
@@ -63,6 +64,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
             Stainscount += int((neighbor.r == 0.2) && (neighbor.g == 0) && (neighbor.b == 1));
             Coagulationscount += int((neighbor.r == 0.6) && (neighbor.g == 0.6) && (neighbor.b == 0));
             WalledCitiescount += int((neighbor.r == 0.2) && (neighbor.g == 0.2) && (neighbor.b == 0.8));
+            Gnarlcount += int((neighbor.r == 1) && (neighbor.g == 0.6) && (neighbor.b == 0));
         }
     }
 
@@ -99,6 +101,8 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
         ((Coagulationscount == 0 || Coagulationscount == 1 || Coagulationscount == 4) ? 0.0 : float4(0.6, 0.6, 0, 1)) :
         (current.r == 0.2 && current.g == 0.2 && current.b == 0.8) ?
         ((WalledCitiescount < 2 || WalledCitiescount > 5) ? 0.0 : float4(0.2, 0.2, 0.8, 1)) :
+        (current.r == 1 && current.g == 0.6 && current.b == 0) ?
+        ((Gnarlcount != 1) ? 0.0 : float4(1, 0.6, 0, 1)) :
         // if cell is dead
         ((GoLcount == 3) ? float4(1, 1, 1, 1) :
          (Seedscount == 2) ? float4(1, 0.8, 0, 1) :
@@ -115,7 +119,8 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
          (LongLifecount >= 3 && LongLifecount <= 5) ? float4(0.2, 0.2, 0.2, 1) :
          (Stainscount == 3 || Stainscount >= 6 && Stainscount <= 8) ? float4(0.2, 0, 1, 1) :
          (Coagulationscount == 3 || Coagulationscount == 7 || Coagulationscount == 8) ? float4(0.6, 0.6, 0, 1) :
-         (WalledCitiescount >= 4 && WalledCitiescount <= 8) ? float4(0.2, 0.2, 0.8, 1) : 0.0);
+         (WalledCitiescount >= 4 && WalledCitiescount <= 8) ? float4(0.2, 0.2, 0.8, 1) :
+         (Gnarlcount == 1) ? float4(1, 0.6, 0, 1) : 0.0);
 
     nextBuffer[cellPos] = next;
 }
