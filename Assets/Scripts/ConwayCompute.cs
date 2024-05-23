@@ -61,6 +61,16 @@ public class ConwayCompute : MonoBehaviour
         {
             string[] sb = customRuleInputField.text.Split("/");
 
+            if (sb[0] == "")
+            {
+                sb[0] = "9";
+            }
+
+            if (sb[1] == "")
+            {
+                sb[1] = "9";
+            }
+
             char[] surviveCharArray = sb[0].ToCharArray();
             char[] bornCharArray = sb[1].ToCharArray();
 
