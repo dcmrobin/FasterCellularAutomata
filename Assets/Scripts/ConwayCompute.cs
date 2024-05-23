@@ -57,40 +57,43 @@ public class ConwayCompute : MonoBehaviour
 
     public void SetCustomRule()
     {
-        string[] sb = customRuleInputField.text.Split("/", StringSplitOptions.RemoveEmptyEntries);
-
-        char[] surviveCharArray = sb[0].ToCharArray();
-        char[] bornCharArray = sb[1].ToCharArray();
-
-        int[] surviveIntArray = new int[surviveCharArray.Length];
-        int[] bornIntArray = new int[bornCharArray.Length];
-
-        for (int s = 0; s < surviveCharArray.Length; s++)
+        if (customRuleInputField.text != "" && customRuleInputField.text.Contains("/"))
         {
-            for (int b = 0; b < bornCharArray.Length; b++)
+            string[] sb = customRuleInputField.text.Split("/", StringSplitOptions.RemoveEmptyEntries);
+    
+            char[] surviveCharArray = sb[0].ToCharArray();
+            char[] bornCharArray = sb[1].ToCharArray();
+    
+            int[] surviveIntArray = new int[surviveCharArray.Length];
+            int[] bornIntArray = new int[bornCharArray.Length];
+    
+            for (int s = 0; s < surviveCharArray.Length; s++)
             {
-                if (int.TryParse(surviveCharArray[s].ToString(), out int S_result) && int.TryParse(bornCharArray[b].ToString(), out int B_result))
+                for (int b = 0; b < bornCharArray.Length; b++)
                 {
-                    surviveIntArray[s] = S_result;
-                    bornIntArray[b] = B_result;
+                    if (int.TryParse(surviveCharArray[s].ToString(), out int S_result) && int.TryParse(bornCharArray[b].ToString(), out int B_result))
+                    {
+                        surviveIntArray[s] = S_result;
+                        bornIntArray[b] = B_result;
+                    }
                 }
             }
+    
+            if (customSbuffer != null && customBbuffer != null)
+            {
+                customSbuffer.Release();
+                customBbuffer.Release();
+            }
+    
+            customSbuffer = new ComputeBuffer(surviveIntArray.Length, sizeof(int));
+            customBbuffer = new ComputeBuffer(bornIntArray.Length, sizeof(int));
+    
+            customSbuffer.SetData(surviveIntArray);
+            customBbuffer.SetData(bornIntArray);
+    
+            computeShader.SetBuffer(0, "customSbuffer", customSbuffer);
+            computeShader.SetBuffer(0, "customBbuffer", customBbuffer);
         }
-
-        if (customSbuffer != null && customBbuffer != null)
-        {
-            customSbuffer.Release();
-            customBbuffer.Release();
-        }
-
-        customSbuffer = new ComputeBuffer(surviveIntArray.Length, sizeof(int));
-        customBbuffer = new ComputeBuffer(bornIntArray.Length, sizeof(int));
-
-        customSbuffer.SetData(surviveIntArray);
-        customBbuffer.SetData(bornIntArray);
-
-        computeShader.SetBuffer(0, "customSbuffer", customSbuffer);
-        computeShader.SetBuffer(0, "customBbuffer", customBbuffer);
     }
 
     void InitializeTextures()
