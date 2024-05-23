@@ -955,6 +955,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Replicator
       m_Image: {fileID: 0}
+    - m_Text: Mystery
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
