@@ -37,13 +37,12 @@ public class ConwayCompute : MonoBehaviour
 
         colorBuffer = new ComputeBuffer(1, sizeof(float) * 4);
 
-        customSbuffer = new ComputeBuffer(1, sizeof(int));
-        customBbuffer = new ComputeBuffer(1, sizeof(int));
-
         computeShader.SetBool("pauseBool", isPaused);
         computeShader.SetBool("notDrawingBool", notDrawing);
         computeShader.SetInt("width", width);
         computeShader.SetInt("height", height);
+
+        SetCustomRule();
     }
 
     public void InitCellType()
@@ -60,11 +59,11 @@ public class ConwayCompute : MonoBehaviour
     {
         string[] sb = customRuleInputField.text.Split("/", StringSplitOptions.RemoveEmptyEntries);
 
-        char[] bornCharArray = sb[0].ToCharArray();
-        char[] surviveCharArray = sb[1].ToCharArray();
+        char[] surviveCharArray = sb[0].ToCharArray();
+        char[] bornCharArray = sb[1].ToCharArray();
 
-        int[] bornIntArray = new int[bornCharArray.Length];
         int[] surviveIntArray = new int[surviveCharArray.Length];
+        int[] bornIntArray = new int[bornCharArray.Length];
 
         for (int s = 0; s < surviveCharArray.Length; s++)
         {
@@ -77,6 +76,15 @@ public class ConwayCompute : MonoBehaviour
                 }
             }
         }
+
+        if (customSbuffer != null && customBbuffer != null)
+        {
+            customSbuffer.Release();
+            customBbuffer.Release();
+        }
+
+        customSbuffer = new ComputeBuffer(surviveIntArray.Length, sizeof(int));
+        customBbuffer = new ComputeBuffer(bornIntArray.Length, sizeof(int));
 
         customSbuffer.SetData(surviveIntArray);
         customBbuffer.SetData(bornIntArray);

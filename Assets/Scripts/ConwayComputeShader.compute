@@ -137,15 +137,20 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
          (Replicatorcount == 1 || Replicatorcount == 3 || Replicatorcount == 5 || Replicatorcount == 7) ? float4(0, 0.4, 0.4, 1) :
          (Mysterycount >= 3 && Mysterycount <= 5 || Mysterycount == 8) ? float4(0, 0.4, 0, 1) : 0.0);
 
-    for (uint s = 0; s < customSbuffer.Length; s++) {
-        if (Customcount) {
-
+    if (current.r == 1 && current.g == 0.4 && current.b == 0)
+    {
+        for (uint s = 0; s < customSbuffer.Length; s++) {
+            if (Customcount == customSbuffer[s]) {
+                next = float4(1, 0.4, 0, 1);
+                break;
+            }
         }
-    }
-    for (uint b = 0; b < customBbuffer.Length; b++) {
-        if (current.r == 0 && current.g == 0 && current.b) {
-            if (Customcount) {
-
+        for (uint b = 0; b < customBbuffer.Length; b++) {
+            if (current.r == 0 && current.g == 0 && current.b) {
+                if (Customcount == customBbuffer[b]) {
+                    next = float4(1, 0.4, 0, 1);
+                    break;
+                }
             }
         }
     }
