@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Mathematics;
 using TMPro;
 using Unity.VisualScripting;
 using System;
@@ -236,93 +237,93 @@ public class ConwayCompute : MonoBehaviour
         GetComponent<Camera>().orthographicSize = Mathf.Clamp(GetComponent<Camera>().orthographicSize, 0.1f, 6);
     }
 
-    public Vector4 CellType()
+    public float4 CellType()
     {
-        Vector4 type;
+        float4 type;
         switch (cellTypeDropdown.value)
         {
             case 0:
-                type = new Vector4(1, 1, 1, 1);
+                type = new float4(1, 1, 1, 1);
                 currentRuleText.text = "23/3";
                 break;
             case 1:
-                type = new Vector4(1, 0, 0, 1);
+                type = new float4(1, 0, 0, 1);
                 currentRuleText.text = "23/36";
                 break;
             case 2:
-                type = new Vector4(1, 0.8f, 0, 1);
+                type = new float4(1, 0.8f, 0, 1);
                 currentRuleText.text = "/2";
                 break;
             case 3:
-                type = new Vector4(0, 1, 1, 1);
+                type = new float4(0, 1, 1, 1);
                 currentRuleText.text = "34578/3678";
                 break;
             case 4:
-                type = new Vector4(1, 0, 1, 1);
+                type = new float4(1, 0, 1, 1);
                 currentRuleText.text = "1358/357";
                 break;
             case 5:
-                type = new Vector4(0, 0, 1, 1);
+                type = new float4(0, 0, 1, 1);
                 currentRuleText.text = "4567/345";
                 break;
             case 6:
-                type = new Vector4(0, 1, 0, 1);
+                type = new float4(0, 1, 0, 1);
                 currentRuleText.text = "245/368";
                 break;
             case 7:
-                type = new Vector4(0.4f, 0, 0, 1);
+                type = new float4(0.4f, 0, 0, 1);
                 currentRuleText.text = "5678/35678";
                 break;
             case 8:
-                type = new Vector4(0.6f, 1, 0.6f, 1);
+                type = new float4(0.6f, 1, 0.6f, 1);
                 currentRuleText.text = "12345/3";
                 break;
             case 9:
-                type = new Vector4(1, 1, 0.2f, 1);
+                type = new float4(1, 1, 0.2f, 1);
                 currentRuleText.text = "125/36";
                 break;
             case 10:
-                type = new Vector4(1, 0.2f, 0, 1);
+                type = new float4(1, 0.2f, 0, 1);
                 currentRuleText.text = "238/357";
                 break;
             case 11:
-                type = new Vector4(0.2f, 0, 0.2f, 1);
+                type = new float4(0.2f, 0, 0.2f, 1);
                 currentRuleText.text = "34/34";
                 break;
             case 12:
-                type = new Vector4(0.2f, 0.2f, 0.2f, 1);
+                type = new float4(0.2f, 0.2f, 0.2f, 1);
                 currentRuleText.text = "5/345";
                 break;
             case 13:
-                type = new Vector4(0.2f, 0, 1, 1);
+                type = new float4(0.2f, 0, 1, 1);
                 currentRuleText.text = "235678/3678";
                 break;
             case 14:
-                type = new Vector4(0.6f, 0.6f, 0, 1);
+                type = new float4(0.6f, 0.6f, 0, 1);
                 currentRuleText.text = "235678/378";
                 break;
             case 15:
-                type = new Vector4(0.2f, 0.2f, 0.8f, 1);
+                type = new float4(0.2f, 0.2f, 0.8f, 1);
                 currentRuleText.text = "2345/45678";
                 break;
             case 16:
-                type = new Vector4(1, 0.6f, 0, 1);
+                type = new float4(1, 0.6f, 0, 1);
                 currentRuleText.text = "1/1";
                 break;
             case 17:
-                type = new Vector4(0, 0.4f, 0.4f, 1);
+                type = new float4(0, 0.4f, 0.4f, 1);
                 currentRuleText.text = "1357/1357";
                 break;
             case 18:
-                type = new Vector4(0, 0.4f, 0, 1);
+                type = new float4(0, 0.4f, 0, 1);
                 currentRuleText.text = "05678/3458";
                 break;
             case 19:
-                type = new Vector4(1, 0.4f, 0, 1);
+                type = new float4(1, 0.4f, 0, 1);
                 currentRuleText.text = "custom";
                 break;
             default:
-                type = new Vector4(0, 0, 0, 1);
+                type = new float4(0, 0, 0, 1);
                 currentRuleText.text = "ERROR/ERROR";
                 break;
         }
@@ -351,10 +352,10 @@ public class ConwayCompute : MonoBehaviour
         computeShader.Dispatch(kernelHandle, 1, 1, 1);
     }
 
-    void SetCellColor(Vector4 color)
+    void SetCellColor(float4 color)
     {
         // Create an array to hold the color data
-        Vector4[] colorData = new Vector4[] { color };
+        float4[] colorData = new float4[] { color };
 
         // Set the data of the color buffer
         colorBuffer.SetData(colorData);
