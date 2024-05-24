@@ -23,7 +23,6 @@ public class ConwayCompute : MonoBehaviour
     public TMP_Text currentRuleText;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer colorBuffer;
-    private ComputeBuffer automatonBuffer;
     private ComputeBuffer customSbuffer;
     private ComputeBuffer customBbuffer;
     private bool useRenderTexture1 = true;
