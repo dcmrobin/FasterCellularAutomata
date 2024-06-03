@@ -79,43 +79,43 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
 
     // Use ternary operator and step function for rules
     float4 next = (current.r == 1 && current.g == 1 && current.b == 1) ?
-        ((GoLcount < 2 || GoLcount > 3) ? 0.0 : float4(1, 1, 1, 1)) :
+        ((GoLcount < 2 || GoLcount > 3) ? float4(0, 0, 0, 1) : float4(1, 1, 1, 1)) :
         (current.r == 1 && current.g == 0.8 && current.b == 0) ?
-        0.0 :
+        float4(0, 0, 0, 1) :
         (current.r == 0 && current.g == 1 && current.b == 1) ?
-        ((DayNightcount == 5 || DayNightcount < 3) ? 0.0 : float4(0, 1, 1, 1)) :
+        ((DayNightcount == 5 || DayNightcount < 3) ? float4(0, 0, 0, 1) : float4(0, 1, 1, 1)) :
         (current.r == 1 && current.g == 0 && current.b == 1) ?
-        ((Amoebacount == 0 || Amoebacount == 2 || Amoebacount == 4 || Amoebacount == 6 || Amoebacount == 7) ? 0.0 : float4(1, 0, 1, 1)) :
+        ((Amoebacount == 0 || Amoebacount == 2 || Amoebacount == 4 || Amoebacount == 6 || Amoebacount == 7) ? float4(0, 0, 0, 1) : float4(1, 0, 1, 1)) :
         (current.r == 1 && current.g == 0 && current.b == 0) ?
-        ((Highlifecount < 2 || Highlifecount > 3) ? 0.0 : float4(1, 0, 0, 1)) :
+        ((Highlifecount < 2 || Highlifecount > 3) ? float4(0, 0, 0, 1) : float4(1, 0, 0, 1)) :
         (current.r == 0 && current.g == 0 && current.b == 1) ?
-        ((Assimilationcount < 4 || Assimilationcount > 7) ? 0.0 : float4(0, 0, 1, 1)) :
+        ((Assimilationcount < 4 || Assimilationcount > 7) ? float4(0, 0, 0, 1) : float4(0, 0, 1, 1)) :
         (current.r == 0 && current.g == 1 && current.b == 0) ?
-        ((Movecount != 2 && Movecount != 4 && Movecount != 5) ? 0.0 : float4(0, 1, 0, 1)) :
+        ((Movecount != 2 && Movecount != 4 && Movecount != 5) ? float4(0, 0, 0, 1) : float4(0, 1, 0, 1)) :
         (current.r == 0.4 && current.g == 0 && current.b == 0) ?
-        ((Diamoebacount < 5 || Diamoebacount > 8) ? 0.0 : float4(0.4, 0, 0, 1)) :
+        ((Diamoebacount < 5 || Diamoebacount > 8) ? float4(0, 0, 0, 1) : float4(0.4, 0, 0, 1)) :
         (current.r == 0.6 && current.g == 1 && current.b == 0.6) ?
-        ((Mazecount < 1 || Mazecount > 5) ? 0.0 : float4(0.6, 1, 0.6, 1)) :
+        ((Mazecount < 1 || Mazecount > 5) ? float4(0, 0, 0, 1) : float4(0.6, 1, 0.6, 1)) :
         (current.r == 1 && current.g == 1 && current.b == 0.2) ?
-        ((TwoXtwocount != 1 && TwoXtwocount != 2 && TwoXtwocount != 5) ? 0.0 : float4(1, 1, 0.2, 1)) :
+        ((TwoXtwocount != 1 && TwoXtwocount != 2 && TwoXtwocount != 5) ? float4(0, 0, 0, 1) : float4(1, 1, 0.2, 1)) :
         (current.r == 1 && current.g == 0.2 && current.b == 0) ?
-        ((PseudoLifecount != 2 && PseudoLifecount != 3 && PseudoLifecount != 8) ? 0.0 : float4(1, 0.2, 0, 1)) :
+        ((PseudoLifecount != 2 && PseudoLifecount != 3 && PseudoLifecount != 8) ? float4(0, 0, 0, 1) : float4(1, 0.2, 0, 1)) :
         (current.r == 0.2 && current.g == 0 && current.b == 0.2) ?
-        ((ThirtyFourcount != 3 && ThirtyFourcount != 4) ? 0.0 : float4(0.2, 0, 0.2, 1)) :
+        ((ThirtyFourcount != 3 && ThirtyFourcount != 4) ? float4(0, 0, 0, 1) : float4(0.2, 0, 0.2, 1)) :
         (current.r == 0.2 && current.g == 0.2 && current.b == 0.2) ?
-        ((LongLifecount != 5) ? 0.0 : float4(0.2, 0.2, 0.2, 1)) :
+        ((LongLifecount != 5) ? float4(0, 0, 0, 1) : float4(0.2, 0.2, 0.2, 1)) :
         (current.r == 0.2 && current.g == 0 && current.b == 1) ?
-        ((Stainscount == 0 || Stainscount == 1 || Stainscount == 4) ? 0.0 : float4(0.2, 0, 1, 1)) :
+        ((Stainscount == 0 || Stainscount == 1 || Stainscount == 4) ? float4(0, 0, 0, 1) : float4(0.2, 0, 1, 1)) :
         (current.r == 0.6 && current.g == 0.6 && current.b == 0) ?
-        ((Coagulationscount == 0 || Coagulationscount == 1 || Coagulationscount == 4) ? 0.0 : float4(0.6, 0.6, 0, 1)) :
+        ((Coagulationscount == 0 || Coagulationscount == 1 || Coagulationscount == 4) ? float4(0, 0, 0, 1) : float4(0.6, 0.6, 0, 1)) :
         (current.r == 0.2 && current.g == 0.2 && current.b == 0.8) ?
-        ((WalledCitiescount < 2 || WalledCitiescount > 5) ? 0.0 : float4(0.2, 0.2, 0.8, 1)) :
+        ((WalledCitiescount < 2 || WalledCitiescount > 5) ? float4(0, 0, 0, 1) : float4(0.2, 0.2, 0.8, 1)) :
         (current.r == 1 && current.g == 0.6 && current.b == 0) ?
-        ((Gnarlcount != 1) ? 0.0 : float4(1, 0.6, 0, 1)) :
+        ((Gnarlcount != 1) ? float4(0, 0, 0, 1) : float4(1, 0.6, 0, 1)) :
         (current.r == 0 && current.g == 0.4 && current.b == 0.4) ?
-        ((Replicatorcount != 1 && Replicatorcount != 3 && Replicatorcount != 5 && Replicatorcount != 7) ? 0.0 : float4(0, 0.4, 0.4, 1)) :
+        ((Replicatorcount != 1 && Replicatorcount != 3 && Replicatorcount != 5 && Replicatorcount != 7) ? float4(0, 0, 0, 1) : float4(0, 0.4, 0.4, 1)) :
         (current.r == 0 && current.g == 0.4 && current.b == 0) ?
-        ((Mysterycount < 5 && Mysterycount != 0) ? 0.0 : float4(0, 0.4, 0, 1)) :
+        ((Mysterycount < 5 && Mysterycount != 0) ? float4(0, 0, 0, 1) : float4(0, 0.4, 0, 1)) :
         // if cell is dead
         ((GoLcount == 3) ? float4(1, 1, 1, 1) :
          (Seedscount == 2) ? float4(1, 0.8, 0, 1) :
@@ -135,7 +135,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
          (WalledCitiescount >= 4 && WalledCitiescount <= 8) ? float4(0.2, 0.2, 0.8, 1) :
          (Gnarlcount == 1) ? float4(1, 0.6, 0, 1) :
          (Replicatorcount == 1 || Replicatorcount == 3 || Replicatorcount == 5 || Replicatorcount == 7) ? float4(0, 0.4, 0.4, 1) :
-         (Mysterycount >= 3 && Mysterycount <= 5 || Mysterycount == 8) ? float4(0, 0.4, 0, 1) : 0.0);
+         (Mysterycount >= 3 && Mysterycount <= 5 || Mysterycount == 8) ? float4(0, 0.4, 0, 1) : float4(0, 0, 0, 1));
 
     for (uint s = 0; s < customSbuffer.Length; s++) {
         if (current.r == 1 && current.g == 0.4 && current.b == 0)
@@ -159,7 +159,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     if (clearing) {
         for (uint cx = 0; cx < texDim.x; cx++) {
             for (uint cy = 0; cy < texDim.y; cy++) {
-                nextBuffer[uint2(cx, cy)] = 0.0;
+                nextBuffer[uint2(cx, cy)] = float4(0, 0, 0, 1);
             }
         }
     }
@@ -203,7 +203,7 @@ void CSMakeCellDead() {
         for (int j = clickPos.y - halfBrushSize; j <= clickPos.y + halfBrushSize; j++) {
             // Check if the current position is within the bounds of the texture
             if (i >= 0 && i < width && j >= 0 && j < height) {
-                currentBuffer[int2(i, j)] = 0.0;
+                currentBuffer[int2(i, j)] = float4(0, 0, 0, 1);
             }
         }
     }
