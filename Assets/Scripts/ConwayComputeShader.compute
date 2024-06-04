@@ -184,11 +184,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
 
     nextBuffer[cellPos] = next;
     if (clearing) {
-        for (uint cx = 0; cx < texDim.x; cx++) {
-            for (uint cy = 0; cy < texDim.y; cy++) {
-                nextBuffer[uint2(cx, cy)] = float4(0, 0, 0, 1);
-            }
-        }
+        nextBuffer[id.xy] = float4(0, 0, 0, 1);
     }
 }
 
