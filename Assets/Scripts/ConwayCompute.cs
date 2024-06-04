@@ -43,6 +43,8 @@ public class ConwayCompute : MonoBehaviour
         computeShader.SetBool("notDrawingBool", notDrawing);
         computeShader.SetInt("width", width);
         computeShader.SetInt("height", height);
+        computeShader.SetInt("wrapWidth", width - 12);
+        computeShader.SetInt("wrapHeight", height - 12);
 
         SetCustomRule();
     }

@@ -17,6 +17,15 @@ bool clearing;
 uint brushRadius;
 int width;
 int height;
+int wrapWidth;
+int wrapHeight;
+
+uint2 WrapCoordinates(uint2 coordinates, int wrapW, int wrapH) {
+    return uint2(
+        (coordinates.x + wrapW) % wrapW,
+        (coordinates.y + wrapH) % wrapH
+    );
+}
 
 [numthreads(16, 16, 1)]
 void CSMain(uint3 id : SV_DispatchThreadID) {
@@ -55,7 +64,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
-            float4 neighbor = currentBuffer[clamp(cellPos + uint2(x, y), uint2(0, 0), texDim - uint2(1, 1))];
+            float4 neighbor = currentBuffer[WrapCoordinates(cellPos + uint2(x, y), wrapWidth, wrapHeight)];
             GoLcount += int((neighbor.r == 1.0) && (neighbor.g == 1.0) && (neighbor.b == 1.0));
             Seedscount += int((neighbor.r == 1.0) && (neighbor.g == 0.8) && (neighbor.b == 0));
             DayNightcount += int((neighbor.r == 0) && (neighbor.g == 1.0) && (neighbor.b == 1.0));
