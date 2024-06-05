@@ -47,6 +47,8 @@ public class ConwayCompute : MonoBehaviour
         computeShader.SetInt("wrapHeight", height - 12);
 
         SetCustomRule();
+        SetCellColor(CellType());
+        computeShader.SetBuffer(0, "colorBuffer", colorBuffer);
     }
 
     public void InitCellType()
@@ -115,6 +117,11 @@ public class ConwayCompute : MonoBehaviour
         computeShader.SetBool("clearing", true);
         StartCoroutine(DisableClearingFlag());
     }
+    public void ClearAutomata()
+    {
+        computeShader.SetBool("clearingAutomtata", true);
+        StartCoroutine(DisableClearingFlag());
+    }
 
     private IEnumerator DisableClearingFlag()
     {
@@ -123,6 +130,7 @@ public class ConwayCompute : MonoBehaviour
 
         // Toggle off the clearing flag
         computeShader.SetBool("clearing", false);
+        computeShader.SetBool("clearingAutomtata", false);
     }
 
     void InitializeTextures()
