@@ -344,6 +344,10 @@ public class ConwayCompute : MonoBehaviour
                 type = new float4(1, 1, 0.4f, 1);
                 currentRuleText.text = "6/246/3";
                 break;
+            case 23:
+                type = new float4(1, 0.2f, 0.2f, 1);
+                currentRuleText.text = "3458/37/4";
+                break;
             default:
                 type = new float4(0, 0, 0, 1);
                 currentRuleText.text = "ERROR/ERROR";
