@@ -1624,6 +1624,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Edge Life
       m_Image: {fileID: 0}
+    - m_Text: Frogs
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
