@@ -119,7 +119,7 @@ public class ConwayCompute : MonoBehaviour
     }
     public void ClearAutomata()
     {
-        computeShader.SetBool("clearingAutomtata", true);
+        computeShader.SetBool("clearingAutomata", true);
         StartCoroutine(DisableClearingFlag());
     }
 
@@ -130,7 +130,7 @@ public class ConwayCompute : MonoBehaviour
 
         // Toggle off the clearing flag
         computeShader.SetBool("clearing", false);
-        computeShader.SetBool("clearingAutomtata", false);
+        computeShader.SetBool("clearingAutomata", false);
     }
 
     void InitializeTextures()

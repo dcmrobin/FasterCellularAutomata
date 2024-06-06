@@ -187,7 +187,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     if (clearing) {
         nextBuffer[id.xy] = float4(0, 0, 0, 1);
     }
-    else if (clearingAutomata) {
+    if (clearingAutomata) {
         if (current.r == colorBuffer[0].r && current.g == colorBuffer[0].g && current.b == colorBuffer[0].b) {
             nextBuffer[id.xy] = float4(0, 0, 0, 1);
         }
