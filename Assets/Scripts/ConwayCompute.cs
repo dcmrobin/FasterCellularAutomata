@@ -32,7 +32,6 @@ public class ConwayCompute : MonoBehaviour
     void Start()
     {
         InitializeTextures();
-        InitCellType();
 
         // Create click buffer
         clickBuffer = new ComputeBuffer(1, sizeof(int) * 2);
@@ -49,11 +48,13 @@ public class ConwayCompute : MonoBehaviour
         SetCustomRule();
         SetCellColor(CellType());
         computeShader.SetBuffer(0, "colorBuffer", colorBuffer);
+        computeShader.SetBuffer(0, "clickBuffer", clickBuffer);
+        InitCellType();
     }
 
     public void InitCellType()
     {
-        CellType();
+        SetCellColor(CellType());
     }
 
     public void CopyRule()
