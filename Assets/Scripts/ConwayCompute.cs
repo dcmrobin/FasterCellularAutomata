@@ -337,22 +337,26 @@ public class ConwayCompute : MonoBehaviour
                 currentRuleText.text = "3456/278/6";
                 break;
             case 21:
+                type = new float4(0.8f, 0, 1, 1);
+                currentRuleText.text = "345/2/4";
+                break;
+            case 22:
                 type = new float4(1, 1, 0, 1);
                 currentRuleText.text = "/2/3";
                 break;
-            case 22:
+            case 23:
                 type = new float4(1, 1, 0.4f, 1);
                 currentRuleText.text = "6/246/3";
                 break;
-            case 23:
+            case 24:
                 type = new float4(1, 0.2f, 0.2f, 1);
                 currentRuleText.text = "3458/37/4";
                 break;
-            case 24:
+            case 25:
                 type = new float4(0, 0.8f, 0, 0.4f);
                 currentRuleText.text = "12/34/3";
                 break;
-            case 25:
+            case 26:
                 type = new float4(0.2f, 0.8f, 0.2f, 0.4f);
                 currentRuleText.text = "124/3/3";
                 break;

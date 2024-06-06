@@ -1618,6 +1618,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Star Wars
       m_Image: {fileID: 0}
+    - m_Text: Star Wars 2
+      m_Image: {fileID: 0}
     - m_Text: Brian's Brain
       m_Image: {fileID: 0}
     - m_Text: Brian 6

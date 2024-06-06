@@ -66,6 +66,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     int EdgeLifecount = 0;
     int Frogscount = 0;
     int Frogs2count = 0;
+    int StarWars2count = 0;
     for (int x = -1; x <= 1; x++) {
         for (int y = -1; y <= 1; y++) {
             if (x == 0 && y == 0) continue;
@@ -96,6 +97,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
             EdgeLifecount += int((neighbor.r == 1.0) && (neighbor.g == 0.2) && (neighbor.b == 0.2) && (neighbor.a == 1.0));
             Frogscount += int((neighbor.r == 0) && (neighbor.g == 0.8) && (neighbor.b == 0) && (neighbor.a == 0.4));
             Frogs2count += int((neighbor.r == 0.2) && (neighbor.g == 0.8) && (neighbor.b == 0.2) && (neighbor.a == 0.4));
+            StarWars2count += int((neighbor.r == 0.8) && (neighbor.g == 0) && (neighbor.b == 1) && (neighbor.a == 1.0));
         }
     }
 
@@ -158,6 +160,12 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
         ((Frogscount != 1 && Frogscount != 2) ? float4(0, 0.8, 0, 1) : float4(0, 0.8, 0, 0.4)) :
         (current.r == 0.2 && current.g == 0.8 && current.b == 0.2 && current.a == 0.4) ?
         ((Frogs2count != 1 && Frogs2count != 2 && Frogs2count != 4) ? float4(0.2, 0.8, 0.2, 1) : float4(0.2, 0.8, 0.2, 0.4)) :
+        (current.r == 0.8 && current.g == 0 && current.b == 1 && current.a == 1) ?
+        ((StarWars2count < 3 || StarWars2count > 5) ? float4(0.8, 0, 1, 0.8) : float4(0.8, 0, 1, 1)) :
+        (current.r == 0.8 && current.g == 0 && current.b == 1 && current.a == 0.8) ?
+        float4(0.8, 0, 1, 0.6) :
+        (current.r == 0.8 && current.g == 0 && current.b == 1 && current.a == 0.6) ?
+        float4(0.8, 0, 1, 0.4) :
         // if cell is dead
         (current.r == 0 && current.g == 0 && current.b == 0 && current.a == 1) ?
         ((GoLcount == 3) ? float4(1, 1, 1, 1) :
@@ -184,7 +192,8 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
          (Brian6count == 2 || Brian6count == 4 || Brian6count == 6) ? float4(1, 1, 0.4, 1) : 
          (EdgeLifecount == 3 || EdgeLifecount == 7) ? float4(1, 0.2, 0.2, 1) :
          (Frogscount == 3 || Frogscount == 4) ? float4(0, 0.8, 0, 0.4) :
-         (Frogs2count == 3) ? float4(0.2, 0.8, 0.2, 0.4) : float4(0, 0, 0, 1)) : float4(0, 0, 0, 1);
+         (Frogs2count == 3) ? float4(0.2, 0.8, 0.2, 0.4) :
+         (StarWars2count == 2) ? float4(0.8, 0, 1, 1) : float4(0, 0, 0, 1)) : float4(0, 0, 0, 1);
 
     for (uint s = 0; s < customSbuffer.Length; s++) {
         if (current.r == 1 && current.g == 0.4 && current.b == 0)
