@@ -223,14 +223,11 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     }
 
     if (customA > 2) {
-        for (uint a = 1; a < customA - 2; a++) {
-            if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a < 1) {
-                next = float4(1, 0.4, 0, decreaseAmount * a);
-            }
-            else if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a <= decreaseAmount) {
-                next = float4(0, 0, 0, 1);
-                break;
-            }
+        if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a < 1 && current.a > decreaseAmount) {
+            next = float4(1, 0.4, 0, current.a - decreaseAmount);
+        }
+        else if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a <= decreaseAmount) {
+            next = float4(0, 0, 0, 1);
         }
     }
 
