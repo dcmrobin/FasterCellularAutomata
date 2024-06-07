@@ -338,36 +338,36 @@ public class ConwayCompute : MonoBehaviour
                 currentRuleText.text = "05678/3458";
                 break;
             case 19:
-                type = new int4(1000, 400, 0, 1000);
-                currentRuleText.text = customRuleInputField.text;
-                break;
-            case 20:
                 type = new int4(0, 0, 800, 200);
                 currentRuleText.text = "3456/278/6";
                 break;
-            case 21:
+            case 20:
                 type = new int4(800, 0, 1000, 1000);
                 currentRuleText.text = "345/2/4";
                 break;
-            case 22:
+            case 21:
                 type = new int4(1000, 1000, 0, 1000);
                 currentRuleText.text = "/2/3";
                 break;
-            case 23:
+            case 22:
                 type = new int4(1000, 1000, 400, 1000);
                 currentRuleText.text = "6/246/3";
                 break;
-            case 24:
+            case 23:
                 type = new int4(1000, 200, 200, 1000);
                 currentRuleText.text = "3458/37/4";
                 break;
-            case 25:
+            case 24:
                 type = new int4(0, 800, 0, 400);
                 currentRuleText.text = "12/34/3";
                 break;
-            case 26:
+            case 25:
                 type = new int4(200, 800, 200, 400);
                 currentRuleText.text = "124/3/3";
+                break;
+            case 26:
+                type = new int4(1000, 400, 0, 1000);
+                currentRuleText.text = customRuleInputField.text;
                 break;
             default:
                 type = new int4(0, 0, 0, 1000);

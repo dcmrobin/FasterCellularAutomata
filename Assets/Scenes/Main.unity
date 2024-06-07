@@ -1614,8 +1614,6 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Mystery
       m_Image: {fileID: 0}
-    - m_Text: Custom
-      m_Image: {fileID: 0}
     - m_Text: Star Wars
       m_Image: {fileID: 0}
     - m_Text: Star Wars 2
@@ -1629,6 +1627,8 @@ MonoBehaviour:
     - m_Text: Frogs
       m_Image: {fileID: 0}
     - m_Text: Frogs 2
+      m_Image: {fileID: 0}
+    - m_Text: Custom
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
