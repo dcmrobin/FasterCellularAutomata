@@ -66,20 +66,25 @@ public class ConwayCompute : MonoBehaviour
     {
         if (customRuleInputField.text != "" && customRuleInputField.text.Contains("/"))
         {
-            string[] sb = customRuleInputField.text.Split("/");
+            string[] sba = customRuleInputField.text.Split("/");// sba[0] is survive, sba[1] is born, sba[2] is the count of states
 
-            if (sb[0] == "")
+            if (sba[0] == "")
             {
-                sb[0] = "9";
+                sba[0] = "9";
             }
 
-            if (sb[1] == "")
+            if (sba[1] == "")
             {
-                sb[1] = "9";
+                sba[1] = "9";
             }
 
-            char[] surviveCharArray = sb[0].ToCharArray();
-            char[] bornCharArray = sb[1].ToCharArray();
+            if (sba.Length == 3 && sba[2] == "")
+            {
+                sba[2] = "2";
+            }
+
+            char[] surviveCharArray = sba[0].ToCharArray();
+            char[] bornCharArray = sba[1].ToCharArray();
 
             int[] surviveIntArray = new int[surviveCharArray.Length];
             int[] bornIntArray = new int[bornCharArray.Length];
@@ -110,6 +115,10 @@ public class ConwayCompute : MonoBehaviour
     
             computeShader.SetBuffer(0, "customSbuffer", customSbuffer);
             computeShader.SetBuffer(0, "customBbuffer", customBbuffer);
+            if (sba.Length == 3)
+            {
+                computeShader.SetInt("customA", Convert.ToInt32(sba[2]));
+            }
         }
     }
 
@@ -330,7 +339,7 @@ public class ConwayCompute : MonoBehaviour
                 break;
             case 19:
                 type = new int4(1000, 400, 0, 1000);
-                currentRuleText.text = "custom";
+                currentRuleText.text = customRuleInputField.text;
                 break;
             case 20:
                 type = new int4(0, 0, 800, 200);

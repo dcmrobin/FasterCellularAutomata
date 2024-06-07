@@ -10,6 +10,7 @@ StructuredBuffer<int4> colorBuffer; // Buffer to store cell colors
 
 StructuredBuffer<int> customSbuffer;
 StructuredBuffer<int> customBbuffer;
+uint customA = 2;
 
 bool pauseBool;
 bool notDrawingBool;
@@ -90,7 +91,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
             Gnarlcount += int((neighbor.r == 1.0) && (neighbor.g == 0.6) && (neighbor.b == 0));
             Replicatorcount += int((neighbor.r == 0) && (neighbor.g == 0.4) && (neighbor.b == 0.4));
             Mysterycount += int((neighbor.r == 0) && (neighbor.g == 0.4) && (neighbor.b == 0));
-            Customcount += int((neighbor.r == 1.0) && (neighbor.g == 0.4) && (neighbor.b == 0));
+            Customcount += int((neighbor.r == 1.0) && (neighbor.g == 0.4) && (neighbor.b == 0) && (neighbor.a == 1.0));
             StarWarscount += int((neighbor.r == 0) && (neighbor.g == 0) && (neighbor.b == 0.8) && (neighbor.a == 0.2));
             StarWars2count += int((neighbor.r == 0.8) && (neighbor.g == 0) && (neighbor.b == 1) && (neighbor.a == 1.0));
             BriansBraincount += int((neighbor.r == 1.0) && (neighbor.g == 1.0) && (neighbor.b == 0) && (neighbor.a == 1.0));
@@ -195,19 +196,40 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
          (Frogscount == 3 || Frogscount == 4) ? float4(0, 0.8, 0, 0.4) :
          (Frogs2count == 3) ? float4(0.2, 0.8, 0.2, 0.4) : float4(0, 0, 0, 1)) : float4(0, 0, 0, 1);
 
-    for (uint s = 0; s < customSbuffer.Length; s++) {
-        if (current.r == 1 && current.g == 0.4 && current.b == 0)
-        {
+
+    float decreaseAmount = 0.0;
+    if (customA > 2) {
+        decreaseAmount = (float)(1000/customA)/1000;
+    }
+
+    if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a == 1) {
+        for (uint s = 0; s < customSbuffer.Length; s++) {
             if (Customcount == customSbuffer[s]) {
+                next = float4(1, 0.4, 0, 1);
+                break;
+            }
+            else if (customA > 2 && s == customSbuffer.Length - 1 && Customcount != customSbuffer[s]) {
+                next = float4(1, 0.4, 0, 1 - decreaseAmount);
+            }
+        }
+    }
+    else if (current.r == 0 && current.g == 0 && current.b == 0 && current.a == 1) {
+        for (uint b = 0; b < customBbuffer.Length; b++) {
+            if (Customcount == customBbuffer[b]) {
                 next = float4(1, 0.4, 0, 1);
                 break;
             }
         }
     }
-    for (uint b = 0; b < customBbuffer.Length; b++) {
-        if (current.r == 0 && current.g == 0 && current.b == 0) {
-            if (Customcount == customBbuffer[b]) {
-                next = float4(1, 0.4, 0, 1);
+
+    if (customA > 2) {
+        for (uint a = 0; a < customA - 2; a++) {
+            if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a < 1) {
+                next = float4(1, 0.4, 0, decreaseAmount * a);
+                break;
+            }
+            else if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a <= decreaseAmount) {
+                next = float4(0, 0, 0, 1);
                 break;
             }
         }
