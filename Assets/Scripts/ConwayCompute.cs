@@ -329,7 +329,7 @@ public class ConwayCompute : MonoBehaviour
                 currentRuleText.text = "05678/3458";
                 break;
             case 19:
-                type = new int4(1, 400, 0, 1000);
+                type = new int4(1000, 400, 0, 1000);
                 currentRuleText.text = "custom";
                 break;
             case 20:
