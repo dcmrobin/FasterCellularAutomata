@@ -6,7 +6,7 @@ RWTexture2D<float4> currentBuffer;
 RWTexture2D<float4> nextBuffer;
 
 StructuredBuffer<int2> clickBuffer; // Buffer to store click position
-StructuredBuffer<float4> colorBuffer; // Buffer to store cell colors
+StructuredBuffer<int4> colorBuffer; // Buffer to store cell colors
 
 StructuredBuffer<int> customSbuffer;
 StructuredBuffer<int> customBbuffer;
@@ -218,7 +218,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
         nextBuffer[id.xy] = float4(0, 0, 0, 1);
     }
     if (clearingAutomata) {
-        if (current.r == colorBuffer[0].r && current.g == colorBuffer[0].g && current.b == colorBuffer[0].b || next.r == colorBuffer[0].r && next.g == colorBuffer[0].g && next.b == colorBuffer[0].b) {
+        if (current.r == (float)colorBuffer[0].r/1000 && current.g == (float)colorBuffer[0].g/1000 && current.b == (float)colorBuffer[0].b/1000 || next.r == (float)colorBuffer[0].r/1000 && next.g == (float)colorBuffer[0].g/1000 && next.b == (float)colorBuffer[0].b/1000) {
             nextBuffer[id.xy] = float4(0, 0, 0, 1);
         }
     }
@@ -240,7 +240,7 @@ void CSMakeCellAlive() {
         for (int j = clickPos.y - halfBrushSize; j <= clickPos.y + halfBrushSize; j++) {
             // Check if the current position is within the bounds of the texture
             if (i >= 0 && i < width && j >= 0 && j < height) {
-                currentBuffer[int2(i, j)] = float4(colorBuffer[0]);
+                currentBuffer[int2(i, j)] = float4((float4)colorBuffer[0]/1000);
             }
         }
     }
