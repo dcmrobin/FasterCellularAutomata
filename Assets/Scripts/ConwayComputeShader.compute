@@ -199,7 +199,7 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
 
     float decreaseAmount = 0.0;
     if (customA > 2) {
-        decreaseAmount = (float)(1000/customA)/1000;
+        decreaseAmount = (float)(1000/(customA - 1))/1000;
     }
 
     if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a == 1) {
@@ -223,10 +223,9 @@ void CSMain(uint3 id : SV_DispatchThreadID) {
     }
 
     if (customA > 2) {
-        for (uint a = 0; a < customA - 2; a++) {
+        for (uint a = 1; a < customA - 2; a++) {
             if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a < 1) {
                 next = float4(1, 0.4, 0, decreaseAmount * a);
-                break;
             }
             else if (current.r == 1 && current.g == 0.4 && current.b == 0 && current.a <= decreaseAmount) {
                 next = float4(0, 0, 0, 1);
