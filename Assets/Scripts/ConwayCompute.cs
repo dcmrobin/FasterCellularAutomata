@@ -20,6 +20,7 @@ public class ConwayCompute : MonoBehaviour
     public TMP_InputField brushSizeInputField;
     public TMP_InputField customRuleInputField;
     public TMP_Dropdown cellTypeDropdown;
+    public TMP_Dropdown predefinedShapeDropdown;
     public TMP_Text currentRuleText;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer colorBuffer;
