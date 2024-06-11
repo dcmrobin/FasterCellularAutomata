@@ -65,6 +65,8 @@ public class ConwayCompute : MonoBehaviour
 
     public void SetCustomRule()
     {
+        customRuleInputField.text = customRuleInputField.text.Replace("	", "");
+        customRuleInputField.text = customRuleInputField.text.Replace(" ", "");
         if (customRuleInputField.text != "" && customRuleInputField.text.Contains("/"))
         {
             string[] sba = customRuleInputField.text.Split("/");// sba[0] is survive, sba[1] is born, sba[2] is the count of states

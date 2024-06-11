@@ -1,0 +1,2 @@
+1. Have a predefined shapes list that changes depending on which automaton has been selected in the automata dropdown
+2. Have a automata picker where whatever cell you click on (maybe dedicated button) you get that cell's automaton as the one you are currently drawing
