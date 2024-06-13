@@ -122,6 +122,10 @@ public class ConwayCompute : MonoBehaviour
             {
                 computeShader.SetInt("customA", Convert.ToInt32(sba[2]));
             }
+            else
+            {
+                computeShader.SetInt("customA", 2);
+            }
         }
     }
 
