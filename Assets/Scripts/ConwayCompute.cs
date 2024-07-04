@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ConwayCompute : MonoBehaviour
 {
@@ -17,11 +18,12 @@ public class ConwayCompute : MonoBehaviour
     public RenderTexture renderTexture2;
     public MeshRenderer planeObjectRenderer;
     public int brushRadius;
-    public TMP_InputField brushSizeInputField;
+    public Slider brushSizeSlider;
     public TMP_InputField customRuleInputField;
     public TMP_Dropdown cellTypeDropdown;
     public TMP_Dropdown predefinedShapeDropdown;
     public TMP_Text currentRuleText;
+    public TMP_Text brushSizeText;
     private ComputeBuffer clickBuffer; // Buffer to store click position
     private ComputeBuffer colorBuffer;
     private ComputeBuffer customSbuffer;
@@ -32,6 +34,8 @@ public class ConwayCompute : MonoBehaviour
 
     void Start()
     {
+        brushSizeSlider.maxValue = width;
+
         InitializeTextures();
 
         // Create click buffer
@@ -174,14 +178,8 @@ public class ConwayCompute : MonoBehaviour
         // Swap render textures for the next frame
         useRenderTexture1 = !useRenderTexture1;
 
-        if (brushSizeInputField.text == "")
-        {
-            brushRadius = 3;
-        }
-        else
-        {
-            brushRadius = Convert.ToInt32(brushSizeInputField.text);
-        }
+        brushRadius = (int)brushSizeSlider.value;
+        brushSizeText.text = brushSizeSlider.value.ToString();
 
         HandleInput();
     }
