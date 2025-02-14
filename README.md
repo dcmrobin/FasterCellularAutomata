@@ -30,4 +30,4 @@ Frogs 2<br>
 Custom<br><br>
 The different automata can be run at the same time on the same board:<br>
 ![image](https://github.com/user-attachments/assets/b3aa9b74-89b5-4cae-b74f-74e10038c192)<br>
-And you can clear a specific automaton if you don't want to clear the entire board. You can zoom in, and pan with WASD.
+And you can clear a specific automaton if you don't want to clear the entire board. You can zoom in, and pan with WASD- and pause with Space.
